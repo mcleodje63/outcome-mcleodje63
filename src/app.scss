@@ -1,4 +1,6 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */ /* Import only what you need from Bulma */
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+
+/* Imports from Bulma CSS framework */
 @import "bulma/sass/utilities/_all";
 @import "bulma/sass/base/_all";
 @import "bulma/sass/elements/_all";
@@ -7,3 +9,7 @@
 @import "bulma/sass/grid/_all";
 @import "bulma/sass/helpers/_all";
 @import "bulma/sass/layout/_all";
+
+/* Imports from Font Awesome icons */
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
