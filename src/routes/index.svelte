@@ -11,3 +11,9 @@
     Welcome to coding with SvelteKit, a modern JavaScript framework that makes it easy to code great apps.
   </p>
 </main>
+
+<footer>
+  <p>
+    &copy; Craighead Diocesan School
+  </p>
+</footer>
