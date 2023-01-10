@@ -1,20 +1,22 @@
 {
-  "name": "to-do",
+  "name": "craighead-sveltekit",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "package": "svelte-kit package",
-    "preview": "svelte-kit preview"
+    "dev": "vite dev",
+    "build": "vite build"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^6.1.1",
-    "@sveltejs/adapter-static": "^1.0.0-next.26",
-    "@sveltejs/kit": "next",
-    "bulma": "^0.9.3",
-    "sass": "^1.46.0",
-    "svelte": "^3.44.0",
-    "svelte-preprocess": "^4.10.4"
+    "@fortawesome/fontawesome-free": "^6.2.1",
+    "@sveltejs/adapter-auto": "^1.0.0",
+    "@sveltejs/kit": "^1.0.0",
+    "@sveltejs/vite-plugin-svelte": "^2.0.2",
+    "bulma": "^0.9.4",
+    "node-sass": "^8.0.0",
+    "sass": "^1.57.1",
+    "svelte": "^3.54.0",
+    "svelte-preprocess": "^4.10.7",
+    "vite": "^4.0.0"
   },
   "type": "module"
 }
