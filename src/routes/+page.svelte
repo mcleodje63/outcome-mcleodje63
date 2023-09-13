@@ -11,5 +11,5 @@
 </main>
 
 <footer>
-  <p>&copy; Craighead Diocesan School 2023</p>
+  <p>&copy; Craighead Diocesan School 2024</p>
 </footer>
