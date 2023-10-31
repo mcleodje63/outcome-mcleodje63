@@ -12,9 +12,5 @@ $body-overflow-y: auto;
 @import "bulma/sass/helpers/_all";
 @import "bulma/sass/layout/_all";
 
-/* Imports from Font Awesome icons */
-$fa-font-path: "@fortawesome/fontawesome-free/webfonts";
-@import "@fortawesome/fontawesome-free/scss/fontawesome";
-@import "@fortawesome/fontawesome-free/scss/solid";
-@import "@fortawesome/fontawesome-free/scss/regular";
-@import "@fortawesome/fontawesome-free/scss/brands";
+@import "eos-icons/dist/css/eos-icons";
+@import "eos-icons/dist/css/eos-icons-outlined";
