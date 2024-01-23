@@ -8,13 +8,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "^2.0.0",
-    "@sveltejs/kit": "^1.20.4",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "bulma": "^0.9.4",
-    "eos-icons": "^5.4.0",
-    "sass": "^1.63.6",
-    "svelte": "^4.0.5",
-    "vite": "^4.4.2"
+    "sass": "^1.70.0",
+    "svelte": "^4.2.9",
+    "vite": "^5.0.12"
   },
   "type": "module"
 }
