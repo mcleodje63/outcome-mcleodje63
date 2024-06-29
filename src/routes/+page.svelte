@@ -1,6 +1,8 @@
 <script>
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
+  // should I have a sepertate page for the calculator? Or just have it as a pop-up
+  // What about local storage?
   import Calculator from "$lib/Calculator.svelte"
   import Navigation from "$lib/Navigation.svelte"
   let rent = 0
