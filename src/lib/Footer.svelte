@@ -1,18 +1,6 @@
 <footer>
   <div class="footerNav">
     <ul>
-      <li>
-        <span class="dot"><a href=""><img src="instagram.png" alt="Instagram logo" class="socialIcon" /></a></span>
-        <span class="dot"><a href=""><img src="youtube.png" alt="Youtube logo" class="socialIcon" /></a> </span>
-        <span class="dot"><a href=""><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
-      </li>
-      <li>
-        <div class="link">
-          <b>&copy;Jessie Mcleod 2024</b>
-        </div>
-      </li>
-    </ul>
-    <ul>
       <div class="footerHead">
         <li>HELPFUL PAGES</li>
       </div>
@@ -31,6 +19,18 @@
       <li>Privacy Policy</li>
     </ul>
   </div>
+  <ul>
+    <li>
+      <span class="dot"><a href=""><img src="instagram.png" alt="Instagram logo" class="socialIcon" /></a></span>
+      <span class="dot"><a href=""><img src="youtube.png" alt="Youtube logo" class="socialIcon" /></a> </span>
+      <span class="dot"><a href=""><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
+    </li>
+    <li>
+      <div class="link">
+        <b>&copy;Jessie Mcleod 2024</b>
+      </div>
+    </li>
+  </ul>
 </footer>
 
 <style>
@@ -41,6 +41,11 @@
     border-radius: 100%;
     display: inline-block;
     margin: 0.5vw;
+  }
+  .socialIcon {
+    width: 2.5vw;
+    display: flex;
+    margin: 0.75vw;
   }
   img {
     width: 3vw;
@@ -78,6 +83,6 @@
     padding: 5rem;
   }
   li {
-    margin-bottom: 0.5rem;
+    margin: 0.5rem;
   }
 </style>
