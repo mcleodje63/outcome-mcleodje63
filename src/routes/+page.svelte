@@ -47,6 +47,8 @@
 <style>
   main {
     padding-bottom: 3rem;
+    text-align: center;
+    justify-content: center;
   }
   /* .columns {
     display: flex;

@@ -13,6 +13,7 @@
     <ul>
       <div class="footerHead">
         <li>SUPPORT</li>
+        <!-- the header is quite close to the text - add spacing -->
       </div>
       <li>Contact us</li>
       <li>Terms of Service</li>
@@ -27,7 +28,7 @@
     </li>
     <li>
       <div class="link">
-        <b>&copy;Jessie Mcleod 2024</b>
+        <a href="https://github.com/mcleodje63"> <b>&copy;Jessie Mcleod 2024</b> </a>
       </div>
     </li>
   </ul>
@@ -59,10 +60,11 @@
     position: relative;
   }
   .link {
-    color: #ffffff;
     text-align: left;
     position: absolute;
     bottom: 0;
+    text-decoration: none;
+    color: white;
   }
   .footerNav {
     display: flex;
