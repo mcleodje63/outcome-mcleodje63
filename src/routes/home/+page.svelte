@@ -6,7 +6,13 @@
 
 <main>
   <Navigation />
-  <Header />
+  <span class="container">
+    <img src="citySkyline.JPG" alt="Singapore buildings" />
+  </span>
+  <div class="header">
+    <Header />
+  </div>
+
   <span class="textBox"><p>Easier than ever before.</p></span>
   <span class="textBox"><p>Simple and accurate.</p></span>
   <span class="textBox"><p>Add your flat now.</p></span>
@@ -16,26 +22,37 @@
 </main>
 
 <style>
+  .container {
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 0;
+  }
+
+  .header {
+    position: absolute;
+    top: 10em;
+    left: 16px;
+  }
   .textBox {
     height: 20vw;
     width: 20vw;
     background-color: #d0d6b3;
     border-radius: 25%;
-    display: inline-block;
+    display: inline-flex;
     margin: 2vw;
-    /* what even is padding again? lol */
     padding: 25px;
   }
   .textRectangle {
     height: 7vw;
     width: 70vw;
     background-color: #b6adad;
-    border-radius: 20%;
-    /* fix this */
-    display: inline-block;
+    border-radius: 25px;
+    display: inline-flex;
     margin: 2vw;
     margin-left: 15%;
     padding: 25px;
+    text-align: center;
   }
   p {
     color: white;

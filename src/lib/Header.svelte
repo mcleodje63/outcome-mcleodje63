@@ -1,7 +1,27 @@
 <header class="hero">
   <div class="hero-body">
-  <h3 class="logo"> Flatter </h3><div class="headerGroup">
-    <h1 class="title">Welcome to Flatter</h1>
-    <h2 class="subtitle">Rent made easy</h2>
-  </div></div>
+    <h3 class="logo">Flatter</h3>
+    <h1>Welcome to Flatter</h1>
+    <p>Rent made easy</p>
+  </div>
 </header>
+
+<style>
+  .logo {
+    color: white;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+  }
+  h1 {
+    color: white;
+    font-weight: 900;
+    font-family: "Inter", sans-serif;
+    font-size: 3em;
+  }
+  p {
+    color: white;
+    font-weight: 350;
+    font-family: "Inter", sans-serif;
+    font-size: 2em;
+  }
+</style>

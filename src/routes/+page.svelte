@@ -19,33 +19,35 @@
 </script>
 
 <Navigation />
-<Header />
-
 <main>
+  <span class="container"> <img src="hillTree.JPG" alt="grey concrete building" /></span>
+  <div class="header"><Header /></div>
   <!-- <div class="columns"> -->
   <!-- big background image -->
   <!-- work out how to store stuff locally -->
-  <p>How much rent does your flat pay per week?</p>
-  <input bind:value={rent} />
+  <div class="calcFunction">
+    <p>How much rent does your flat pay per week?</p>
+    <input bind:value={rent} />
 
-  <p>How many people are in your flat?</p>
-  <!-- change this to an drop down number (stop some valid inputs) -->
-  <input bind:value={flatPop} />
-  <br />
-  <button on:click={fundCalculator}>Calculate new rent</button>
+    <p>How many people are in your flat?</p>
+    <!-- change this to an drop down number (stop some valid inputs) -->
+    <input bind:value={flatPop} />
+    <br />
+    <button on:click={fundCalculator}>Calculate new rent</button>
 
-  <div class="calcAnswers">
-    <p>Your flat pays {rent} a week</p>
-    <p>There are {flatPop} people in your flat</p>
-    <p>Your weekly total is {newRent}</p>
-    <!-- create boundries -->
+    <div class="calcAnswers">
+      <p>Your flat pays {rent} a week</p>
+      <p>There are {flatPop} people in your flat</p>
+      <p>Your weekly total is {newRent}</p>
+      <!-- create boundries -->
+    </div>
   </div>
 </main>
 
 <Footer />
 
 <style>
-  main {
+  .calcFunction {
     padding-bottom: 3rem;
     text-align: center;
     justify-content: center;
@@ -56,4 +58,15 @@
     justify-content: space-evenly;
     padding: 5rem 10rem;
   } */
+  .container {
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 0;
+  }
+  .header {
+    position: absolute;
+    top: 10em;
+    right: 16px;
+  }
 </style>
