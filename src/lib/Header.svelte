@@ -1,8 +1,13 @@
+<script>
+  export let title
+  export let subtitle
+</script>
+
 <header class="hero">
   <div class="hero-body">
     <h3 class="logo">Flatter</h3>
-    <h1>Welcome to Flatter</h1>
-    <p>Rent made easy</p>
+    <h1>{title}</h1>
+    <p>{subtitle}</p>
   </div>
 </header>
 

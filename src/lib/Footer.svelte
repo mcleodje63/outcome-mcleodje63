@@ -27,9 +27,7 @@
       <span class="dot"><a href=""><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
     </li> -->
     <li>
-      <div class="link">
-        <a href="https://github.com/mcleodje63"> <b>&copy;Jessie Mcleod 2024</b> </a>
-      </div>
+      <a href="https://github.com/mcleodje63"> <b>&copy;Jessie Mcleod 2024</b> </a>
     </li>
   </ul>
 </footer>
@@ -59,7 +57,7 @@
     align-items: center;
     position: relative;
   }
-  .link {
+  a {
     text-align: center;
     /* position: absolute; */
     bottom: 0;

@@ -1,72 +1,64 @@
 <script>
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
-  // should I have a sepertate page for the calculator? Or just have it as a pop-up
-  // What about local storage?
-  import Calculator from "$lib/Calculator.svelte"
   import Navigation from "$lib/Navigation.svelte"
-  let rent = 0
-  let flatPop = 0
-  let newRent = 0
-  // let newRent = ...divided by how many members are in the flat
-  function fundCalculator() {
-    if (flatPop > 0) {
-      newRent = rent / flatPop
-    } else {
-      newRent = 0
-    }
-  }
 </script>
 
-<Navigation />
 <main>
-  <span class="container"> <img src="hillTree.JPG" alt="grey concrete building" /></span>
-  <div class="header"><Header /></div>
-  <!-- <div class="columns"> -->
-  <!-- big background image -->
-  <!-- work out how to store stuff locally -->
-  <div class="calcFunction">
-    <p>How much rent does your flat pay per week?</p>
-    <input bind:value={rent} />
-
-    <p>How many people are in your flat?</p>
-    <!-- change this to an drop down number (stop some valid inputs) -->
-    <input bind:value={flatPop} />
-    <br />
-    <button on:click={fundCalculator}>Calculate new rent</button>
-
-    <div class="calcAnswers">
-      <p>Your flat pays {rent} a week</p>
-      <p>There are {flatPop} people in your flat</p>
-      <p>Your weekly total is {newRent}</p>
-      <!-- create boundries -->
-    </div>
+  <Navigation />
+  <span class="container">
+    <img src="citySkyline.JPG" alt="Singapore buildings" />
+  </span>
+  <div class="header">
+    <Header title="Welcome to flatter" subtitle="Rent made easy" />
   </div>
+
+  <span class="textBox"><p>Easier than ever before.</p></span>
+  <span class="textBox"><p>Simple and accurate.</p></span>
+  <span class="textBox"><p>Add your flat now.</p></span>
+  <span class="textBox"><p>Made for students, by students.</p></span>
+  <span class="textRectangle"><p>No more stress over missed or late payments</p></span>
+  <Footer />
 </main>
 
-<Footer />
-
 <style>
-  .calcFunction {
-    padding-bottom: 3rem;
-    text-align: center;
-    justify-content: center;
-  }
-  /* .columns {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 5rem 10rem;
-  } */
   .container {
     position: relative;
     text-align: center;
     color: white;
     padding: 0;
   }
+
   .header {
     position: absolute;
     top: 10em;
-    right: 16px;
+    left: 16px;
+  }
+  .textBox {
+    height: 20vw;
+    width: 20vw;
+    background-color: #d0d6b3;
+    border-radius: 25%;
+    display: inline-flex;
+    margin: 2vw;
+    padding: 25px;
+  }
+  .textRectangle {
+    height: 7vw;
+    width: 70vw;
+    background-color: #b6adad;
+    border-radius: 25px;
+    display: inline-flex;
+    margin: 2vw;
+    margin-left: 15%;
+    padding: 25px;
+    text-align: center;
+  }
+  p {
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    justify-content: center;
+    font-size: 2em;
   }
 </style>
