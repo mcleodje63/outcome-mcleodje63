@@ -80,9 +80,10 @@
     margin: 0;
     margin-right: 50px;
     margin-left: 50px;
-    padding: 5rem;
+    padding: 2vw;
   }
   li {
     margin: 0.5rem;
+    font-size: 1.5vw;
   }
 </style>

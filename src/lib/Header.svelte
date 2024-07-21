@@ -1,6 +1,6 @@
 <script>
-  export let title
-  export let subtitle
+  export let title = "Main heading"
+  export let subtitle = "Secondary heading"
 </script>
 
 <header class="hero">
@@ -14,19 +14,20 @@
 <style>
   .logo {
     color: white;
-    font-weight: 600;
+    font-weight: 650;
     font-family: "Inter", sans-serif;
+    font-size: 1.5vw;
   }
   h1 {
     color: white;
     font-weight: 900;
     font-family: "Inter", sans-serif;
-    font-size: 3em;
+    font-size: 3.7vw;
   }
   p {
     color: white;
-    font-weight: 350;
+    font-weight: 400;
     font-family: "Inter", sans-serif;
-    font-size: 2em;
+    font-size: 2vw;
   }
 </style>
