@@ -84,6 +84,6 @@
   }
   li {
     margin: 0.5rem;
-    font-size: 1.5vw;
+    font-size: 1vw;
   }
 </style>

@@ -58,11 +58,13 @@
     padding-bottom: 2vw;
     justify-content: center;
     border: 2px solid #ccc;
+    border-radius: 10px;
     padding: 2vw;
-    margin: 3vw 25vw;
+    margin: 3vw 30vw;
     font-size: 1.5vw;
     text-align: center;
     position: relative;
+    color: #6e6e6e;
   }
   /* .columns {
     display: flex;
@@ -79,7 +81,9 @@
   .calcHead {
     border-bottom: 2px solid #ccc;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 700;
+    color: #6e6e6e;
+    font-size: 2vw;
   }
   .header {
     position: absolute;
@@ -94,22 +98,27 @@
   button {
     color: white;
     background-color: #407938;
-    width: 50%;
+    width: 40%;
     height: 50%;
-    padding: 0.5em;
-    font-size: 1em;
+    padding: 0.75vw;
+    font-size: 1.5vw;
     font-family: "Inter", sans-serif;
     font-weight: bold;
     text-align: center;
-    border: none;
-    border-radius: 30px;
-    margin: 1em;
+    border: 2px solid #407938;
+    border-radius: 3vw;
+    margin: 1vw;
+  }
+  button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #407938;
   }
   input {
-    height: 2.5em;
-    width: 15em;
-    font-size: 0.7em;
-    margin: 1em;
+    height: 2.5vw;
+    width: 15vw;
+    font-size: 1.25vw;
+    margin: 0.5vw;
   }
   /* button:hover {
     color: white;

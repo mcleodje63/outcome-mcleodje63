@@ -10,6 +10,9 @@
     <img src="citySkyline.JPG" style="max-width: 100%;" alt="Singapore buildings" />
   </span>
   <div class="header">
+    <div class="favicon">
+      <link rel="shortcut icon" type="image/png" href="flatterLogo" />
+    </div>
     <Header title="Welcome to Flatter" subtitle="Rent made easy" />
   </div>
 
@@ -35,13 +38,13 @@
     left: 1vw;
   }
   .textBox {
-    height: 20vw;
-    width: 20vw;
+    height: 19vw;
+    width: 19vw;
     background-color: #d0d6b3;
     border-radius: 25%;
     display: inline-flex;
     margin: 2vw;
-    padding: 25px;
+    padding: 2vw;
   }
   .textBox:hover {
     background: #d0d6b3ad;
@@ -68,5 +71,10 @@
     justify-content: center;
     font-size: 2.5vw;
     font-weight: 600;
+  }
+  .favicon {
+    object-fit: cover;
+    width: 1vw;
+    height: 1vw;
   }
 </style>

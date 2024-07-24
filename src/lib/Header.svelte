@@ -4,6 +4,7 @@
 </script>
 
 <header class="hero">
+  <link rel="icon" type="image/x-icon" href="flatterLogo" />
   <div class="hero-body">
     <h3 class="logo">Flatter</h3>
     <h1>{title}</h1>
