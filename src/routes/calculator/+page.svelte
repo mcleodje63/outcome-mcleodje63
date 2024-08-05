@@ -8,19 +8,35 @@
   let rent = 0
   let flatPop = 0
   let newRent = 0
+  let rentResponse = ""
+
   // let newRent = ...divided by how many members are in the flat
   function fundCalculator() {
     if (flatPop > 0) {
       newRent = rent / flatPop
+      newRent = newRent.toFixed(2)
     } else {
-      newRent = 0
+      newRent = "N/A"
+    }
+    // Find method to lump, more effective
+    if (rent > 2000) {
+      rentResponse = "Your number is too big!"
+      newRent = "N/A"
+    } else if (rent < 1) {
+      rentResponse = "Your number is too small!"
+      newRent = "N/A"
+    } else if (rent === e) {
+      rentResponse = "Invalid, please try again"
+      newRent = "N/A"
+    } else {
+      rentResponse = ""
     }
   }
 </script>
 
 <Navigation />
 <main>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- add total mobile friendlyness  -->
 
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
@@ -34,17 +50,32 @@
       <p>Welcome to Flatter</p>
     </div>
     <p>How much rent does your flat pay per week?</p>
-    <input bind:value={rent} />
-
+    <input type="number" bind:value={rent} min="1" max="2000" />
+    <br />
+    <div class="errorMessage">
+      <b>{rentResponse}</b>
+    </div>
     <p>How many people are in your flat?</p>
     <!-- change this to an drop down number (stop some valid inputs) -->
-    <input bind:value={flatPop} />
+    <select bind:value={flatPop} id="flatPopInput" min="1" max="10">
+      <option value="1">1 person</option>
+      <option value="2">2 people</option>
+      <option value="3">3 people</option>
+      <option value="4">4 people</option>
+      <option value="5">5 people</option>
+      <option value="6">6 people</option>
+      <option value="7">7 people</option>
+      <option value="8">8 people</option>
+      <option value="9">9 people</option>
+      <option value="10">10 people</option>
+    </select>
+
     <br />
     <button class="btn-hover color-1" on:click={fundCalculator}>Get rent</button>
 
     <div class="calcAnswers">
       <p>Your flat pays {rent} a week</p>
-      <p>There are {flatPop} people in your flat</p>
+      <p>There {flatPop === 1 ? "is" : "are"} {flatPop} person{flatPop !== 1 ? "s" : ""} in your flat</p>
       <p>Your weekly total is {newRent}</p>
       <!-- create boundries -->
     </div>
@@ -95,7 +126,7 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
-  button {
+  .btn-hover {
     color: white;
     background-color: #407938;
     width: 40%;
@@ -109,7 +140,7 @@
     border-radius: 3vw;
     margin: 1vw;
   }
-  button:hover {
+  .btn-hover:hover {
     background-color: white;
     color: black;
     border: 2px solid #407938;
@@ -119,40 +150,22 @@
     width: 15vw;
     font-size: 1.25vw;
     margin: 0.5vw;
-  }
-  /* button:hover {
-    color: white;
-    margin: 1.5rem;
-    width: 50%;
-    height: 50%;
-    padding: 0.5em;
-    font-size: 1em;
     font-family: "Inter", sans-serif;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    text-align: center;
-    border: none;
-    background-size: 300% 100%;
-    moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    font-weight: 600;
+    color: rgb(87, 87, 87);
   }
-
-  .btn-hover:hover {
-    background-position: 100% 0;
-    moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+  select {
+    height: 2.5vw;
+    width: 15vw;
+    font-size: 1.25vw;
+    /* add another font size for when the dropdown is clicked */
+    margin: 0.5vw;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    color: rgb(87, 87, 87);
   }
-
-  .btn-hover:focus {
-    outline: none;
+  .errorMessage {
+    color: #407938;
+    font-size: 2vw;
   }
-  .btn-hover.color-1 {
-    background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
-    box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
-  } */
 </style>
