@@ -1,14 +1,14 @@
 <script>
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
-  // should I have a sepertate page for the calculator? Or just have it as a pop-up
-  // What about local storage?
-  // import Calculator from "$lib/Calculator.svelte"
   import Navigation from "$lib/Navigation.svelte"
   let rent = 0
   let flatPop = 0
   let newRent = 0
   let rentResponse = ""
+  let people = []
+
+  // if local stoarge people
 
   // let newRent = ...divided by how many members are in the flat
   function fundCalculator() {
@@ -31,6 +31,21 @@
     } else {
       rentResponse = ""
     }
+  }
+  //save people + names, ability to: add, delete, edit, save load
+  //save rent. Ability: edit, save, load.
+  function addPerson() {
+    people = [...people, ""]
+    //add the simpler version
+  }
+  function removePerson(index) {
+    people = [...people.slice(0, index), ...people.slice(index + 1)]
+  }
+  function savePeople() {
+    localStorage.flatmates = JSON.stringify(people)
+  }
+  function loadPeople() {
+    people = JSON.parse(localStorage.flatmates)
   }
 </script>
 
@@ -68,8 +83,21 @@
       <option value="8">8 people</option>
       <option value="9">9 people</option>
       <option value="10">10 people</option>
-    </select>
-
+    </select><br />
+    <button on:click={addPerson}>📝 Add </button>
+    {#each people as person, index}
+      <div class="person">
+        <input bind:value={person} />
+      </div>
+      <button
+        on:click={() => {
+          removePerson(index)
+        }}
+        >🗑
+      </button>
+    {/each}
+    <button on:click={savePeople}>💾</button>
+    <button on:click={loadPeople}>📡 </button>
     <br />
     <button class="btn-hover color-1" on:click={fundCalculator}>Get rent</button>
 
@@ -85,6 +113,10 @@
 <Footer />
 
 <style>
+  .person {
+    display: block;
+  }
+
   .calcFunction {
     padding-bottom: 2vw;
     justify-content: center;
