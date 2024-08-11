@@ -9,14 +9,17 @@
 <main>
   <h1>All sorted.</h1>
   <!-- desired outcome = image instead of solid colour text box, adjust with screen -->
-
+<!-- curve corners  + layer text on top -->
   <div class="img-container">
     <img src="chchStreet.JPG" alt="" />
     <img src="chchStreet.JPG" alt="" />
     <img src="chchStreet.JPG" alt="" />
   </div>
-
-  <div class="row">
+<div class="text-left">
+    <h1>All Sorted</h1>
+    <hr />
+    <p>All your stuff in one place, no more confusing spreadsheets or rushed group texts.</p>
+</div>
     <div class="column">
       <div class="container">
         <div class="imageRow">
@@ -24,13 +27,18 @@
           <div class="overlay-text">Say goodbye to late or forgotten bills</div>
         </div>
       </div>
+<div class="text-right">
+    <h1>Loved by everyone. </h1>
+   
+    <p>Designed for university students in New Zealand, but anyone can use it. </p>
+ <hr /></div>
+<!-- use this structure for the larger images  -->
+  <div class="row">
+
       <div class="column"><img src="placeholder.png" alt="place holder" /></div>
       <div class="column"><img src="placeholder.png" alt="place holder" /></div>
     </div>
     <br />
-    <h1>All Sorted</h1>
-    <hr />
-    <p>All your stuff in one place, no more confusing spreadsheets or rushed group texts.</p>
 
     <div class="imgRight"><img src="placeholder.png" alt="placeholder" /></div>
 
@@ -40,11 +48,16 @@
   </div>
 </main>
 <Footer />
-
 <style>
+.text-left{
+  justify-content: left;
+}
+.text-right{justify-content:right;
+margin-left: 60vw;}
   .img-container {
     display: flex;
     justify-content: space-around;
+
   }
 
   .img-container img {
