@@ -41,6 +41,7 @@
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
   }
+  //combine save function with add person
   function savePeople() {
     localStorage.flatmates = JSON.stringify(people)
   }

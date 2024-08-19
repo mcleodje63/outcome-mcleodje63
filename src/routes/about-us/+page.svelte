@@ -5,132 +5,130 @@
 </script>
 
 <Navigation />
-<!-- <div class="header"><Header title="About us" subtitle="Join the nation." /></div> -->
+
 <main>
   <h1>All sorted.</h1>
-  <!-- desired outcome = image instead of solid colour text box, adjust with screen -->
-<!-- curve corners  + layer text on top -->
   <div class="img-container">
-    <img src="chchStreet.JPG" alt="" />
-    <img src="chchStreet.JPG" alt="" />
-    <img src="chchStreet.JPG" alt="" />
-  </div>
-<div class="text-left">
-    <h1>All Sorted</h1>
-    <hr />
-    <p>All your stuff in one place, no more confusing spreadsheets or rushed group texts.</p>
-</div>
-    <div class="column">
-      <div class="container">
-        <div class="imageRow">
-          <img src="chchStreet.JPG" alt="Christchurch Streets" />
-          <div class="overlay-text">Say goodbye to late or forgotten bills</div>
-        </div>
+    <div class="img-wrapper">
+      <img src="chchStreet.JPG" alt="" id="christchurchStreet" />
+      <div class="overlay-text">
+        <p>Say goodbye to late or forgotten bills</p>
       </div>
-<div class="text-right">
-    <h1>Loved by everyone. </h1>
-   
-    <p>Designed for university students in New Zealand, but anyone can use it. </p>
- <hr /></div>
-<!-- use this structure for the larger images  -->
-  <div class="row">
-
-      <div class="column"><img src="placeholder.png" alt="place holder" /></div>
-      <div class="column"><img src="placeholder.png" alt="place holder" /></div>
     </div>
-    <br />
-
-    <div class="imgRight"><img src="placeholder.png" alt="placeholder" /></div>
-
-    <!-- <span class="textBox"><p>Simple and accurate.</p></span>
-  <span class="textBox"><p>Work out your flat now.</p></span>
-  <span class="textBox"><p>Made for students, by students.</p></span> -->
+    <div class="img-wrapper">
+      <img src="skytower.JPG" alt="Auckland-skytower-night" id="skytower" />
+      <div class="overlay-text">
+        <p>Squashing payments</p>
+      </div>
+    </div>
+    <div class="img-wrapper">
+      <img src="concertMtSmart.jpg" alt="HSLOTMtSmart" id="mtSmart" />
+      <div class="overlay-text">
+        <p>More time to do what you love.</p>
+      </div>
+    </div>
   </div>
+
+  <div class="container-right">
+    <div class="text-left">
+      <h1>All Sorted.</h1>
+      <hr />
+      <p>All your stuff in one place, no more confusing spreadsheets or rushed group texts.</p>
+    </div>
+    <img src="centralCity.JPG" alt="Christchurch shops" id="christchurchShop" />
+  </div>
+
+  <div class="container-left">
+    <img src="chchStreet.JPG" alt="" id="placeHolder" />
+    <div class="text-right">
+      <h1>Loved by everyone.</h1>
+      <p>Designed for university students in New Zealand, but anyone can use it.</p>
+      <hr />
+    </div>
+  </div>
+  <!-- use this structure for the larger images  -->
 </main>
 <Footer />
+
 <style>
-.text-left{
-  justify-content: left;
-}
-.text-right{justify-content:right;
-margin-left: 60vw;}
+  .text-left,
+  .text-right {
+    font-size: 2.5vw;
+    font-weight: 300;
+    width: 50%;
+  }
+  .text-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .text-right {
+    display: flex;
+    flex-direction: column;
+  }
   .img-container {
     display: flex;
-    justify-content: space-around;
-
-  }
-
-  .img-container img {
-    height: 200px;
-  }
-
-  .row {
-    display: flex;
     flex-wrap: wrap;
-    padding: 0 4px;
-  }
-
-  .column {
-    flex: 25%;
-    padding: 0 4px;
-  }
-  .container {
+    justify-content: space-around;
     position: relative;
-    padding-bottom: 5vw;
-    color: white;
   }
-
-  .column img {
-    margin-top: 8px;
-    vertical-align: middle;
-    border-radius: 10%;
+  .img-wrapper {
+    position: relative;
+    width: 30%;
+    margin: 1%;
+  }
+  .img-wrapper img {
+    width: 30vw;
+    height: 40vw;
   }
   img {
-    height: 40vw;
-    object-fit: fill;
-    margin: 2vw;
+    border-radius: 5%;
   }
+  .container-right,
+  .container-left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2vw;
+    margin-top: 10vw;
+  }
+
+  .container-right img,
+  .container-left img {
+    width: 40%;
+    height: auto;
+  }
+
   h1 {
     font-weight: 650;
     font-size: 3.5vw;
     color: black;
     font-family: "Inter", sans-serif;
-    margin-left: 3.5vw;
+    margin-left: 2vw;
     padding-top: 5vw;
   }
-  /* .textBox {
-    height: 19vw;
-    width: 19vw;
-    border-radius: 25%;
-    display: inline-flex;
-    margin: 2vw;
-    padding: 2vw;
-    background-color: grey;
-  } */
+
   p {
     color: 66eE6E;
     font-family: "Inter", sans-serif;
-    font-size: 2.5vw;
-    font-weight: 300;
-    position: absalute;
-    margin-left: 3.5vw;
-    margin-right: 65vw;
+    margin-left: 2vw;
   }
   .overlay-text {
     position: absolute;
-    bottom: 8vw;
-    left: 3vw;
-    font-size: 2.6vw;
-    font-weight: bold;
+    top: 80%;
+    bottom: 0.5%;
+    left: 30%;
+    transform: translate(-50%, -50%);
     color: white;
-    font-family: "Inter", sans-serif;
-    padding-right: 8vw;
+    font-size: 2.5vw;
+    border-radius: 10px;
+    font-weight: 700;
+    margin-left: 3vw;
   }
   hr {
     border: none;
     border-top: 1px solid #000;
     width: 40vw;
-    margin-left: 3.5vw;
-    margin-top: 3vw; /* change color */
+    margin-left: 2vw;
+    margin-top: 3vw;
   }
 </style>
