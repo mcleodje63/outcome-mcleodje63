@@ -36,16 +36,18 @@
   //save rent. Ability: edit, save, load.
   function addPerson() {
     people = [...people, ""]
+    localStorage.flatmates = JSON.stringify(people)
     //add the simpler version
   }
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
   }
   //combine save function with add person
-  function savePeople() {
-    localStorage.flatmates = JSON.stringify(people)
-  }
+  // function savePeople() {
+  //   localStorage.flatmates = JSON.stringify(people)
+  // }
   function loadPeople() {
+    localStorage.flatmates = JSON.stringify(people)
     people = JSON.parse(localStorage.flatmates)
   }
 </script>
@@ -85,7 +87,7 @@
       <option value="9">9 people</option>
       <option value="10">10 people</option>
     </select><br />
-    <button on:click={addPerson}>📝 Add </button>
+    <button on:click={addPerson}>Add </button>
     {#each people as person, index}
       <div class="person">
         <input bind:value={person} />
@@ -97,8 +99,10 @@
         >🗑
       </button>
     {/each}
-    <button on:click={savePeople}>💾</button>
+    <!-- <button on:click={savePeople}>💾</button> -->
+    <!-- combine save with add + make them save when they press load -->
     <button on:click={loadPeople}>📡 </button>
+    {people}
     <br />
     <button class="btn-hover color-1" on:click={fundCalculator}>Get rent</button>
 

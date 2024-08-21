@@ -28,7 +28,7 @@
       <!-- Navbar items on the left -->
       <a class="navbar-item" href="/">Home</a>
       <a class="navbar-item" href="/calculator"> Calculator</a>
-      <a class="navbar-item" href="/about-us">About us</a>
+      <a class="navbar-item" href="/learn">Learn</a>
     </div>
   </div>
   <style>
