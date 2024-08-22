@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte"
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
   import Navigation from "$lib/Navigation.svelte"
@@ -7,10 +8,10 @@
   let newRent = 0
   let rentResponse = ""
   let people = []
+  onMount(async () => {
+    loadPeople()
+  })
 
-  // if local stoarge people
-
-  // let newRent = ...divided by how many members are in the flat
   function fundCalculator() {
     if (flatPop > 0) {
       newRent = rent / flatPop
@@ -18,51 +19,60 @@
     } else {
       newRent = "N/A"
     }
-    // Find method to lump, more effective
+
     if (rent > 2000) {
       rentResponse = "Your number is too big!"
       newRent = "N/A"
     } else if (rent < 1) {
       rentResponse = "Your number is too small!"
       newRent = "N/A"
-    } else if (rent === e) {
+    } else if (isNaN(rent)) {
       rentResponse = "Invalid, please try again"
       newRent = "N/A"
     } else {
       rentResponse = ""
     }
+    savePeople()
   }
-  //save people + names, ability to: add, delete, edit, save load
-  //save rent. Ability: edit, save, load.
   function addPerson() {
     people = [...people, ""]
-    localStorage.flatmates = JSON.stringify(people)
-    //add the simpler version
+    flatPop = flatPop + 1
+    savePeople()
   }
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
+    if (flatPop > 0) {
+      flatPop = flatPop - 1
+    } else {
+      flatPop = 0
+    }
+    savePeople()
   }
-  //combine save function with add person
-  // function savePeople() {
-  //   localStorage.flatmates = JSON.stringify(people)
-  // }
-  function loadPeople() {
+  function savePeople() {
     localStorage.flatmates = JSON.stringify(people)
-    people = JSON.parse(localStorage.flatmates)
+  }
+
+  function loadPeople() {
+    if (localStorage.flatmates) {
+      people = JSON.parse(localStorage.flatmates)
+      flatPop = people.length
+    }
+  }
+  function reset() {
+    rent = 0
+    flatPop = 0
+    newRent = 0
+    rentResponse = ""
+    people = []
+    localStorage.clear()
   }
 </script>
 
 <Navigation />
 <main>
-  <!-- add total mobile friendlyness  -->
-
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
   <div class="header"><Header title="Start calculating" subtitle="Right now." /></div>
-  <!-- <div class="columns"> -->
-  <!-- big background image -->
-  <!-- work out how to store stuff locally -->
-
   <div class="calcFunction">
     <div class="calcHead">
       <p>Welcome to Flatter</p>
@@ -74,37 +84,24 @@
       <b>{rentResponse}</b>
     </div>
     <p>How many people are in your flat?</p>
-    <!-- change this to an drop down number (stop some valid inputs) -->
-    <select bind:value={flatPop} id="flatPopInput" min="1" max="10">
-      <option value="1">1 person</option>
-      <option value="2">2 people</option>
-      <option value="3">3 people</option>
-      <option value="4">4 people</option>
-      <option value="5">5 people</option>
-      <option value="6">6 people</option>
-      <option value="7">7 people</option>
-      <option value="8">8 people</option>
-      <option value="9">9 people</option>
-      <option value="10">10 people</option>
-    </select><br />
-    <button on:click={addPerson}>Add </button>
     {#each people as person, index}
       <div class="person">
         <input bind:value={person} />
+
+        <button on:click={() => removePerson(index)}>🗑</button>
       </div>
-      <button
-        on:click={() => {
-          removePerson(index)
-        }}
-        >🗑
-      </button>
     {/each}
-    <!-- <button on:click={savePeople}>💾</button> -->
-    <!-- combine save with add + make them save when they press load -->
-    <button on:click={loadPeople}>📡 </button>
-    {people}
+
     <br />
-    <button class="btn-hover color-1" on:click={fundCalculator}>Get rent</button>
+    <button
+      class="addButton"
+      on:click={() => {
+        addPerson()
+        loadPeople()
+      }}
+    >
+      Add
+    </button> <button class="btn-hover" on:click={fundCalculator}>Get rent</button>
 
     <div class="calcAnswers">
       <p>Your flat pays {rent} a week</p>
@@ -112,14 +109,28 @@
       <p>Your weekly total is {newRent}</p>
       <!-- create boundries -->
     </div>
+    <button class="resetButton" on:click={reset}>Reset</button>
   </div>
 </main>
 
 <Footer />
 
 <style>
+  .addButton {
+    font-size: 1.5vw;
+    padding: 1vw;
+    width: 6vw;
+  }
+  button {
+    background-color: #c6bdbd;
+    color: white;
+    font-family: "Inter", sans-serif;
+    border-radius: 20px;
+    border-width: 0px;
+  }
   .person {
     display: block;
+    margin-left: 3.4vw;
   }
 
   .calcFunction {
@@ -134,12 +145,7 @@
     position: relative;
     color: #6e6e6e;
   }
-  /* .columns {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 5rem 10rem;
-  } */
+
   .imgContainer {
     position: relative;
     text-align: center;
@@ -168,19 +174,19 @@
     background-color: #407938;
     width: 40%;
     height: 50%;
-    padding: 0.75vw;
+    padding: 1vw;
     font-size: 1.5vw;
     font-family: "Inter", sans-serif;
     font-weight: bold;
     text-align: center;
-    border: 2px solid #407938;
-    border-radius: 3vw;
     margin: 1vw;
+    border: 2px solid #407938;
   }
   .btn-hover:hover {
     background-color: white;
     color: black;
     border: 2px solid #407938;
+    /* why is it moving? */
   }
   input {
     height: 2.5vw;
@@ -190,19 +196,25 @@
     font-family: "Inter", sans-serif;
     font-weight: 600;
     color: rgb(87, 87, 87);
+    margin-left: auto;
+    margin-right: auto;
   }
-  select {
-    height: 2.5vw;
-    width: 15vw;
-    font-size: 1.25vw;
-    /* add another font size for when the dropdown is clicked */
-    margin: 0.5vw;
-    font-family: "Inter", sans-serif;
-    font-weight: 600;
-    color: rgb(87, 87, 87);
-  }
+
   .errorMessage {
     color: #407938;
     font-size: 2vw;
+  }
+  .resetButton {
+    color: black;
+    background-color: white;
+    width: 30%;
+    height: 40%;
+    padding: 1vw;
+    font-size: 1vw;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #407938;
+    margin: 1vw;
   }
 </style>

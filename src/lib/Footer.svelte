@@ -7,7 +7,7 @@
             <li>HELPFUL PAGES</li>
           </div>
           <li><a href="/">Home</a></li>
-          <li><a href="/learn">Learn</a></li>
+          <li><a href="/lear">Learn</a></li>
 
           <li><a href="/calculator">Create a Flatter</a></li>
         </ul>
