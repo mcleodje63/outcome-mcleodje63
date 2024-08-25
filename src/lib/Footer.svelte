@@ -7,8 +7,7 @@
             <li>HELPFUL PAGES</li>
           </div>
           <li><a href="/">Home</a></li>
-          <li><a href="/lear">Learn</a></li>
-
+          <li><a href="/learn">Learn</a></li>
           <li><a href="/calculator">Create a Flatter</a></li>
         </ul>
       </div>
@@ -19,7 +18,7 @@
             <li>SUPPORT</li>
             <!-- the header is quite close to the text - add spacing -->
           </div>
-          <li><a href="/"> Contact us</a></li>
+          <li><a href="/contact-us"> Contact us</a></li>
           <li><a href="/T&C">Terms and conditions</a></li>
           <li>Help</li>
         </ul>
