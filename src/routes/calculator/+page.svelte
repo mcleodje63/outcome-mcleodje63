@@ -21,13 +21,13 @@
     }
 
     if (rent > 2000) {
-      rentResponse = "Your number is too big!"
+      rentResponse = "YOUR NUMBER IS TOO BIG"
       newRent = "N/A"
     } else if (rent < 1) {
-      rentResponse = "Your number is too small!"
+      rentResponse = "YOUR NUMBER IS TOO SMALL"
       newRent = "N/A"
     } else if (isNaN(rent)) {
-      rentResponse = "Invalid, please try again"
+      rentResponse = "INVALID PLEASE TRY AGAIN"
       newRent = "N/A"
     } else {
       rentResponse = ""
@@ -105,7 +105,7 @@
 
     <div class="calcAnswers">
       <p>Your flat pays {rent} a week</p>
-      <p>There {flatPop === 1 ? "is" : "are"} {flatPop} person{flatPop !== 1 ? "s" : ""} in your flat</p>
+      <p>There {flatPop === 1 ? "is" : "are"} {flatPop} {flatPop > 0 ? "person" : "people"} in your flat</p>
       <p>Your weekly total is {newRent}</p>
       <!-- create boundries -->
     </div>
@@ -201,8 +201,14 @@
   }
 
   .errorMessage {
-    color: #407938;
+    color: white;
     font-size: 2vw;
+    width: 28vw;
+    margin-left: 4.5vw;
+    background-color: red;
+    border: 1px;
+    border-radius: 10px;
+    padding: 3px;
   }
   .resetButton {
     color: black;

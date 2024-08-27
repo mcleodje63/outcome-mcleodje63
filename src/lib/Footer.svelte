@@ -19,7 +19,6 @@
             <!-- the header is quite close to the text - add spacing -->
           </div>
           <li><a href="/contact-us"> Contact us</a></li>
-          <li><a href="/T&C">Terms and conditions</a></li>
           <li>Help</li>
         </ul>
       </div>
@@ -27,9 +26,9 @@
   </div>
 
   <div class="socialGroup">
-    <span class="dot"><a href=""><img src="instagram.png" alt="Instagram logo" class="socialIcon" /></a></span>
-    <span class="dot"><a href=""><img src="youtube.png" alt="Youtube logo" class="socialIcon" /></a> </span>
-    <span class="dot"><a href=""><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
+    <span class="dot"><a href="https://www.instagram.com/flattersnz/"><img src="instagram.png" alt="Instagram logo" class="socialIcon" /></a></span>
+    <span class="dot"><a href="https://www.youtube.com/@FlatterNZ"><img src="youtube.png" alt="Youtube logo" class="socialIcon" /></a> </span>
+    <span class="dot"><a href="https://pin.it/13kUE1y7V"><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
   </div>
 
   <div class="copyright">
