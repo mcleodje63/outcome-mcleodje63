@@ -204,11 +204,11 @@
     color: white;
     font-size: 2vw;
     width: 28vw;
-    margin-left: 4.5vw;
+    margin-left: 5vw;
     background-color: red;
-    border: 1px;
     border-radius: 10px;
-    padding: 3px;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
   }
   .resetButton {
     color: black;
