@@ -35,9 +35,13 @@
     savePeople()
   }
   function addPerson() {
-    people = [...people, ""]
-    flatPop = flatPop + 1
-    savePeople()
+    if (flatPop < 10) {
+      people = [...people, ""]
+      flatPop = flatPop + 1
+      savePeople()
+    } else {
+      rentResponse = "Maximum flat population reached (10 people)."
+    }
   }
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
@@ -80,9 +84,7 @@
     <p>How much rent does your flat pay per week?</p>
     <input type="number" bind:value={rent} min="1" max="2000" />
     <br />
-    <div class="errorMessage">
-      <b>{rentResponse}</b>
-    </div>
+
     <p>How many people are in your flat?</p>
     {#each people as person, index}
       <div class="person">
@@ -102,7 +104,9 @@
     >
       Add
     </button> <button class="btn-hover" on:click={fundCalculator}>Get rent</button>
-
+    <div class="errorMessage">
+      <b>{rentResponse}</b>
+    </div>
     <div class="calcAnswers">
       <p>Your flat pays {rent} a week</p>
       <p>There {flatPop === 1 ? "is" : "are"} {flatPop} {flatPop > 0 ? "person" : "people"} in your flat</p>
