@@ -41,7 +41,7 @@
     height: 19vw;
     width: 19vw;
     background-color: #d0d6b3;
-    border-radius: 25%;
+    border-radius: 10%;
     display: inline-flex;
     margin: 2vw;
     padding: 2vw;
@@ -53,7 +53,7 @@
     height: 7vw;
     width: 70vw;
     background-color: #b6adad;
-    border-radius: 25px;
+    border-radius: 10px;
     display: inline-flex;
     margin: 2vw;
     margin-left: 15%;
