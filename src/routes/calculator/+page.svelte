@@ -10,17 +10,40 @@
   let rentResponse = ""
   let people = []
   let rentPercent = []
+  let showPercentages = false
 
   onMount(() => {
     loadPeople()
   })
 
   function fundCalculator() {
-    if (flatPop > 0) {
-      newRent = rent / flatPop
-      newRent = newRent.toFixed(2)
+    if (showPercentages) {
+      let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
+      if (totalPercent !== 100) {
+        rentResponse = "PERCENTAGES MUST ADD UP TO 100%"
+        newRent = []
+        return
+      }
+
+      newRent = people.map((person, index) => {
+        const percent = parseFloat(rentPercent[index]) || 0
+        const amount = parseFloat((rent * (percent / 100)).toFixed(2))
+        return {
+          name: person || "Unnamed",
+          percent: percent,
+          amount: amount.toFixed(2),
+        }
+      })
     } else {
-      newRent = "N/A"
+      if (flatPop > 0) {
+        newRent = people.map((person) => ({
+          name: person || "Unnamed",
+          percent: (100 / flatPop).toFixed(2),
+          amount: (rent / flatPop).toFixed(2),
+        }))
+      } else {
+        newRent = []
+      }
     }
 
     if (rent > 2000) {
@@ -38,21 +61,8 @@
     savePeople()
   }
   function splitCalculator() {
-    let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
-    if (totalPercent !== 100) {
-      rentResponse = "PERCENTAGES MUST ADD UP TO 100%"
-      newRent = "N/A"
-      return
-    }
-    newRent = people.map((person, index) => {
-      return {
-        name: person,
-        percent: rentPercent[index],
-        amount: (rent * (rentPercent[index] / 100)).toFixed(2),
-      }
-    })
-    rentResponse = ""
-    savePeople()
+    showPercentages = !showPercentages
+    fundCalculator()
   }
 
   function addPerson() {
@@ -113,7 +123,11 @@
     {#each people as person, index}
       <div class="person">
         <input class="userInput" bind:value={people[index]} />
-        <input class="userInput" type="number" bind:value={rentPercent[index]} min="0" max="100" />
+
+        {#if showPercentages}
+          <input class="userInput" type="number" bind:value={rentPercent[index]} min="0" max="100" />
+          <!-- make this save too -->
+        {/if}
         <button class="removeButton" on:click={() => removePerson(index)}>🗑</button>
       </div>
     {/each}
@@ -127,19 +141,31 @@
       }}
     >
       Add person
-    </button> <button class="btn-hover" on:click={fundCalculator}>Get rent</button>
-    <button class="btn-hover" on:click={splitCalculator}>Uneven Splitting?</button>
+    </button>
+    <button
+      class="btn-hover"
+      on:click={() => {
+        fundCalculator()
+        loadPeople()
+      }}
+    >
+      Get rent</button
+    >
+    <button class="btn-hover" on:click={splitCalculator}> {showPercentages ? "Even Splitting" : "Uneven Splitting"}</button>
     <div class="calcAnswers">
-      <p>Your flat pays {rent} a week</p>
+      <p>Your flat pays ${rent} a week</p>
       <p>There {flatPop === 1 ? "is" : "are"} {flatPop} {flatPop > 0 ? "person" : "people"} in your flat</p>
-      {#if Array.isArray(newRent)}
-        {#each newRent as rentDetail}<p>{rentDetail.name}({rentDetail.percent}%)= {rentDetail.amount}</p>
+
+      {#if newRent.length > 0}
+        {#each newRent as rentDetail}
+          <p>{rentDetail.name} = ${rentDetail.amount}</p>
         {/each}
       {:else}
-        <p>Your weekly total is {newRent}</p>
+        <p>No rent details available</p>
       {/if}
-      <!-- create boundries -->
     </div>
+    <!-- create boundries -->
+
     <button class="resetButton" on:click={reset}>Reset</button>
   </div>
 </main>
