@@ -39,7 +39,7 @@
   </div>
 
   <div class="container-left">
-    <img src="chchStreet.JPG" alt="" id="placeHolder" />
+    <img src="mountain.png" alt="mountain" id="mountain" />
     <div class="text-right">
       <h1>Loved by everyone.</h1>
       <p>Designed for university students in New Zealand, but anyone can use it.</p>
@@ -90,6 +90,7 @@
     justify-content: space-between;
     margin: 2vw;
     margin-top: 10vw;
+    margin-bottom: 5vw;
   }
 
   .container-right img,

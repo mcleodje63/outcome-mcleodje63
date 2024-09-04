@@ -3,12 +3,15 @@
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
   import Navigation from "$lib/Navigation.svelte"
+
   let rent = 0
   let flatPop = 0
   let newRent = 0
   let rentResponse = ""
   let people = []
-  onMount(async () => {
+  let rentPercent = []
+
+  onMount(() => {
     loadPeople()
   })
 
@@ -34,13 +37,33 @@
     }
     savePeople()
   }
+  function splitCalculator() {
+    let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
+    if (totalPercent !== 100) {
+      rentResponse = "PERCENTAGES MUST ADD UP TO 100%"
+      newRent = "N/A"
+      return
+    }
+    newRent = people.map((person, index) => {
+      return {
+        name: person,
+        percent: rentPercent[index],
+        amount: (rent * (rentPercent[index] / 100)).toFixed(2),
+      }
+    })
+    rentResponse = ""
+    savePeople()
+  }
+
   function addPerson() {
     people = [...people, ""]
+    rentPercent = [...rentPercent, 0]
     flatPop = flatPop + 1
     savePeople()
   }
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
+    rentPercent = [...rentPercent.slice(0, index), ...rentPercent.slice(index + 1)]
     if (flatPop > 0) {
       flatPop = flatPop - 1
     } else {
@@ -50,11 +73,13 @@
   }
   function savePeople() {
     localStorage.flatmates = JSON.stringify(people)
+    localStorage.rentPercent = JSON.stringify(rentPercent)
   }
 
   function loadPeople() {
     if (localStorage.flatmates) {
       people = JSON.parse(localStorage.flatmates)
+      rentPercent = JSON.parse(localStorage.rentPercent)
       flatPop = people.length
     }
   }
@@ -64,6 +89,7 @@
     newRent = 0
     rentResponse = ""
     people = []
+    rentPercent = []
     localStorage.clear()
   }
 </script>
@@ -78,17 +104,17 @@
       <p>Welcome to Flatter</p>
     </div>
     <p>How much rent does your flat pay per week?</p>
-    <input type="number" bind:value={rent} min="1" max="2000" />
+    <input class="userInput" type="number" bind:value={rent} min="1" max="2000" />
     <br />
     <div class="errorMessage">
       <b>{rentResponse}</b>
     </div>
-    <p>How many people are in your flat?</p>
+    <p>Enter the people in your flat & % of rent</p>
     {#each people as person, index}
       <div class="person">
-        <input bind:value={person} />
-
-        <button on:click={() => removePerson(index)}>🗑</button>
+        <input class="userInput" bind:value={people[index]} />
+        <input class="userInput" type="number" bind:value={rentPercent[index]} min="0" max="100" />
+        <button class="removeButton" on:click={() => removePerson(index)}>🗑</button>
       </div>
     {/each}
 
@@ -100,13 +126,18 @@
         loadPeople()
       }}
     >
-      Add
+      Add person
     </button> <button class="btn-hover" on:click={fundCalculator}>Get rent</button>
-
+    <button class="btn-hover" on:click={splitCalculator}>Uneven Splitting?</button>
     <div class="calcAnswers">
       <p>Your flat pays {rent} a week</p>
       <p>There {flatPop === 1 ? "is" : "are"} {flatPop} {flatPop > 0 ? "person" : "people"} in your flat</p>
-      <p>Your weekly total is {newRent}</p>
+      {#if Array.isArray(newRent)}
+        {#each newRent as rentDetail}<p>{rentDetail.name}({rentDetail.percent}%)= {rentDetail.amount}</p>
+        {/each}
+      {:else}
+        <p>Your weekly total is {newRent}</p>
+      {/if}
       <!-- create boundries -->
     </div>
     <button class="resetButton" on:click={reset}>Reset</button>
@@ -117,16 +148,22 @@
 
 <style>
   .addButton {
-    font-size: 1.5vw;
+    font-size: 1.8vw;
     padding: 1vw;
-    width: 6vw;
+    width: 12vw;
   }
   button {
     background-color: #c6bdbd;
     color: white;
     font-family: "Inter", sans-serif;
-    border-radius: 20px;
+    border-radius: 10px;
     border-width: 0px;
+  }
+  .removeButton {
+    width: 3.5vw;
+    height: 3.5vw;
+    border-radius: 20px;
+    font-size: 2.5vw;
   }
   .person {
     display: block;
@@ -189,6 +226,11 @@
     /* why is it moving? */
   }
   input {
+    height: 2.5vw;
+    width: 2.5vw;
+    font-size: 1vw;
+  }
+  .userInput {
     height: 2.5vw;
     width: 15vw;
     font-size: 1.25vw;
