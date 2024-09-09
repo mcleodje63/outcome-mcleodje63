@@ -11,12 +11,31 @@
   let people = []
   let rentPercent = []
   let showPercentages = false
+  let showUtilities = false
+  let utilities = []
 
   onMount(() => {
     loadPeople()
+    loadUtilities()
   })
 
   function fundCalculator() {
+    if (rent > 2000) {
+      rentResponse = "YOUR NUMBER IS TOO BIG"
+      newRent = []
+      return
+    } else if (rent < 1) {
+      rentResponse = "YOUR NUMBER IS TOO SMALL"
+      newRent = []
+      return
+    } else if (isNaN(rent)) {
+      rentResponse = "INVALID PLEASE TRY AGAIN"
+      newRent = []
+      return
+    } else {
+      rentResponse = ""
+    }
+
     if (showPercentages) {
       let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
       if (totalPercent !== 100) {
@@ -36,28 +55,14 @@
       })
     } else {
       if (flatPop > 0) {
-        newRent = people.map((person) => ({
-          name: person || "Unnamed",
-          percent: (100 / flatPop).toFixed(2),
-          amount: (rent / flatPop).toFixed(2),
-        }))
+        const amount = (rent / flatPop).toFixed(2)
+        newRent = [{ amount }]
       } else {
         newRent = []
+        rentResponse = "Add people to split the rent."
       }
     }
 
-    if (rent > 2000) {
-      rentResponse = "YOUR NUMBER IS TOO BIG"
-      newRent = "N/A"
-    } else if (rent < 1) {
-      rentResponse = "YOUR NUMBER IS TOO SMALL"
-      newRent = "N/A"
-    } else if (isNaN(rent)) {
-      rentResponse = "INVALID PLEASE TRY AGAIN"
-      newRent = "N/A"
-    } else {
-      rentResponse = ""
-    }
     savePeople()
   }
   function splitCalculator() {
@@ -81,9 +86,38 @@
     }
     savePeople()
   }
+  function addUtility() {
+    utilities = [...utilities, { name: "", value: 0, saved: false }]
+  }
+
+  function saveUtility(index) {
+    utilities[index].saved = true
+    saveUtilities()
+  }
+
+  function removeUtility(index) {
+    utilities = [...utilities.slice(0, index), ...utilities.slice(index + 1)]
+    saveUtilities()
+  }
+  function updateUtilityName(index, name) {
+    utilities[index].name = name
+  }
+  function updateUtilityValue(index, value) {
+    utilities[index].value = parseFloat(value) || 0
+  }
+  function saveUtilities() {
+    localStorage.utilities = JSON.stringify(utilities)
+  }
+
+  function loadUtilities() {
+    if (localStorage.utilities) {
+      utilities = JSON.parse(localStorage.utilities)
+    }
+  }
   function savePeople() {
     localStorage.flatmates = JSON.stringify(people)
     localStorage.rentPercent = JSON.stringify(rentPercent)
+    localStorage.flatRent = JSON.stringify(rent)
   }
 
   function loadPeople() {
@@ -91,6 +125,7 @@
       people = JSON.parse(localStorage.flatmates)
       rentPercent = JSON.parse(localStorage.rentPercent)
       flatPop = people.length
+      rent = JSON.parse(localStorage.flatRent) || 0
     }
   }
   function reset() {
@@ -101,10 +136,12 @@
     people = []
     rentPercent = []
     localStorage.clear()
+    utilities = []
   }
 </script>
 
 <Navigation />
+<head> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" /></head>
 <main>
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
@@ -115,19 +152,25 @@
     </div>
     <p>How much rent does your flat pay per week?</p>
     <input class="userInput" type="number" bind:value={rent} min="1" max="2000" />
-    <br />
-    <div class="errorMessage">
-      <b>{rentResponse}</b>
+    <div class="field">
+      <input type="checkbox" bind:checked={showUtilities} />
+      <label>Press to add utilities</label>
     </div>
+    {#if showUtilities}
+      <button class="addUtilitiesButton" on:click={addUtility}>Add Utilities</button>{/if}
+
+    <br />
+
     <p>Enter the people in your flat & % of rent</p>
     {#each people as person, index}
       <div class="person">
         <input class="userInput" bind:value={people[index]} />
 
         {#if showPercentages}
-          <input class="userInput" type="number" bind:value={rentPercent[index]} min="0" max="100" />
+          <input class="inputPercent" type="number" bind:value={rentPercent[index]} min="0" max="100" />
           <!-- make this save too -->
         {/if}
+
         <button class="removeButton" on:click={() => removePerson(index)}>🗑</button>
       </div>
     {/each}
@@ -152,16 +195,23 @@
       Get rent</button
     >
     <button class="btn-hover" on:click={splitCalculator}> {showPercentages ? "Even Splitting" : "Uneven Splitting"}</button>
+    <div class="errorMessage">
+      <b>{rentResponse}</b>
+    </div>
     <div class="calcAnswers">
       <p>Your flat pays ${rent} a week</p>
       <p>There {flatPop === 1 ? "is" : "are"} {flatPop} {flatPop > 0 ? "person" : "people"} in your flat</p>
-
-      {#if newRent.length > 0}
-        {#each newRent as rentDetail}
-          <p>{rentDetail.name} = ${rentDetail.amount}</p>
-        {/each}
-      {:else}
-        <p>No rent details available</p>
+      {#if showPercentages}
+        {#if newRent.length > 0}
+          {#each newRent as rentDetail}
+            <p>{rentDetail.name} = ${rentDetail.amount}</p>
+          {/each}
+        {:else}
+          <p>No rent details available</p>
+        {/if}
+      {:else if newRent.length > 0}
+        <p>Each person pays: ${newRent[0].amount}</p>
+      {:else}<p>No rent details available</p>
       {/if}
     </div>
     <!-- create boundries -->
@@ -173,10 +223,29 @@
 <Footer />
 
 <style>
+  .addUtilitiesButton {
+    font-size: 1.8vw;
+    padding: 1vw;
+    text-align: center;
+    border: 2px solid white;
+  }
+  .addUtilitiesButton:hover {
+    background-color: white;
+    color: #808080;
+    border: 2px solid grey;
+    padding: 1vw;
+  }
   .addButton {
     font-size: 1.8vw;
     padding: 1vw;
-    width: 12vw;
+    text-align: center;
+    border: 2px solid white;
+  }
+  .addButton:hover {
+    background-color: white;
+    color: #808080;
+    border: 2px solid grey;
+    padding: 1vw;
   }
   button {
     background-color: #c6bdbd;
@@ -254,12 +323,11 @@
   input {
     height: 2.5vw;
     width: 2.5vw;
-    font-size: 1vw;
+    font-size: 1.25vw;
   }
   .userInput {
     height: 2.5vw;
     width: 15vw;
-    font-size: 1.25vw;
     margin: 0.5vw;
     font-family: "Inter", sans-serif;
     font-weight: 600;
@@ -267,12 +335,16 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .inputPercent {
+    width: 5vw;
+  }
 
   .errorMessage {
     color: white;
     font-size: 2vw;
     width: 28vw;
-    margin-left: 5vw;
+    margin-left: auto;
+    margin-right: auto;
     background-color: red;
     border-radius: 10px;
     margin-top: 2vw;
@@ -281,6 +353,19 @@
   .resetButton {
     color: black;
     background-color: white;
+    width: 30%;
+    height: 40%;
+    padding: 1vw;
+    font-size: 1vw;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #407938;
+    margin: 1vw;
+  }
+  .resetButton:hover {
+    color: white;
+    background-color: #407938;
     width: 30%;
     height: 40%;
     padding: 1vw;

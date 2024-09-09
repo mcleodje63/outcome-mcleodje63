@@ -26,9 +26,7 @@
     <!-- Add your navigation links here -->
     <div class="navbar-start">
       <!-- Navbar items on the left -->
-      <a class="navbar-item" href="/">Home</a>
-      <a class="navbar-item" href="/calculator"> Calculator</a>
-      <a class="navbar-item" href="/learn">Learn</a>
+      <a class="navbar-item" href="/learn">Learn</a> <a class="navbar-item" href="/calculator"> Calculator</a>
     </div>
   </div>
   <style>

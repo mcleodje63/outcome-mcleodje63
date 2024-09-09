@@ -12,13 +12,13 @@
     <div class="img-wrapper">
       <img src="chchStreet.JPG" alt="" id="christchurchStreet" />
       <div class="overlay-text">
-        <p>Say goodbye to late or forgotten bills</p>
+        <p>Say goodbye to late or forgotten bills.</p>
       </div>
     </div>
     <div class="img-wrapper">
       <img src="skytower.JPG" alt="Auckland-skytower-night" id="skytower" />
       <div class="overlay-text">
-        <p>Squashing payments</p>
+        <p>Squashing payments.</p>
       </div>
     </div>
     <div class="img-wrapper">
@@ -111,12 +111,11 @@
   p {
     color: 66eE6E;
     font-family: "Inter", sans-serif;
-    margin-left: 2vw;
   }
   .overlay-text {
     position: absolute;
-    top: 80%;
-    bottom: 0.5%;
+    top: 72%;
+    bottom: 5%;
     left: 30%;
     transform: translate(-50%, -50%);
     color: white;

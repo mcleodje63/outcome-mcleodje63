@@ -13,6 +13,7 @@
     <div class="favicon">
       <link rel="shortcut icon" type="image/png" href="flatterLogo" />
     </div>
+
     <Header title="Welcome to Flatter" subtitle="Rent made easy" />
   </div>
 
@@ -20,11 +21,32 @@
   <span class="textBox"><p>Simple and accurate.</p></span>
   <span class="textBox"><p>Work out your flat now.</p></span>
   <span class="textBox"><p>Made for students, by students.</p></span>
-  <span class="textRectangle"><p>No more stress over missed or late payments</p></span>
+
+  <!-- <span class="textRectangle"><p>No more stress over missed or late payments.</p></span> <button class="calculatorButton" on:click={placeHolder}>The calculator</button> -->
   <Footer />
 </main>
 
 <style>
+  .calculatorButton {
+    color: black;
+    background-color: white;
+    width: 15%;
+    height: 50%;
+    padding: 1vw;
+    font-size: 1.5vw;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    margin: 1vw;
+    border: 2px solid #407938;
+    border-radius: 15px;
+    margin-left: 40%;
+  }
+  .calculatorButton:hover {
+    background-color: #407938;
+    color: white;
+    border: 2px solid #407938;
+    /* why is it moving? */
+  }
   .container {
     position: relative;
     text-align: center;
@@ -40,19 +62,19 @@
   .textBox {
     height: 19vw;
     width: 19vw;
-    background-color: #d0d6b3;
+    background-color: #e8d47c;
     border-radius: 10%;
     display: inline-flex;
     margin: 2vw;
     padding: 2vw;
   }
   .textBox:hover {
-    background: #d0d6b3ad;
+    background: rgb(231, 218, 158);
   }
   .textRectangle {
     height: 7vw;
     width: 70vw;
-    background-color: #b6adad;
+    background-color: #d26f38;
     border-radius: 10px;
     display: inline-flex;
     margin: 2vw;
@@ -63,7 +85,7 @@
   }
 
   .textRectangle:hover {
-    background: #c6bdbd;
+    background: #d48255;
   }
   p {
     color: white;

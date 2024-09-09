@@ -19,7 +19,7 @@
             <!-- the header is quite close to the text - add spacing -->
           </div>
           <li><a href="/contact-us"> Contact us</a></li>
-          <li>Help</li>
+          <li><a href="/help">Help</a></li>
         </ul>
       </div>
     </div>
