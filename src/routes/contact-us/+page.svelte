@@ -18,8 +18,7 @@
     font-weight: 400;
     color: #6e6e6e;
     font-size: 2.5vw;
-    margin-bottom: 15vw;
-    margin-top: 15vw;
+    margin-top: 20vh;
     margin-right: 10vw;
     margin-left: 5vw;
   }
@@ -28,5 +27,8 @@
     justify-content: space-around;
     align-items: center;
     margin-left: 2vw;
+  }
+  main {
+    height: 50vh;
   }
 </style>

@@ -11,9 +11,8 @@
   <div class="img-container">
     <div class="img-wrapper">
       <img src="chchStreet.JPG" alt="" id="christchurchStreet" />
-      <div class="overlay-text">
-        <p>Say goodbye to late or forgotten bills.</p>
-      </div>
+      <div class="overlay-text"><p>Do you know what you owe?</p></div>
+      <div class="overlay"><p>Flatters rights</p></div>
     </div>
     <div class="img-wrapper">
       <img src="skytower.JPG" alt="Auckland-skytower-night" id="skytower" />
@@ -55,15 +54,23 @@
   .text-right {
     font-size: 2.5vw;
     font-weight: 300;
-    width: 50%;
+    width: 40%;
   }
   .text-left {
     display: flex;
     flex-direction: column;
   }
+  .text-left p {
+    margin-left: 3vw;
+  }
+
   .text-right {
     display: flex;
     flex-direction: column;
+  }
+  .text-right p {
+    margin-left: 2.2vw;
+    margin-bottom: 3vw;
   }
   .img-container {
     display: flex;
@@ -97,15 +104,20 @@
   .container-left img {
     width: 40%;
     height: auto;
+    border-radius: 30px;
+  }
+  .container-left img {
+    width: 55%;
   }
 
   h1 {
-    font-weight: 650;
+    font-weight: 700;
     font-size: 3.5vw;
     color: black;
     font-family: "Inter", sans-serif;
     margin-left: 2vw;
     padding-top: 5vw;
+    width: 20vw;
   }
 
   p {
@@ -124,6 +136,28 @@
     font-weight: 700;
     margin-left: 3vw;
   }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .img-wrapper:hover .overlay-text {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
   hr {
     border: none;
     border-top: 1px solid #000;

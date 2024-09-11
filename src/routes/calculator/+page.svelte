@@ -476,6 +476,7 @@
     position: absolute;
     top: 25vw;
     right: 1vw;
+    font-weight: bold;
   }
   * {
     -webkit-box-sizing: border-box;
