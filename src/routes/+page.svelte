@@ -5,8 +5,17 @@
   let currentIndex = 0
   const images = [
     { src: "house.JPG", alt: "Foggy house in Christchurch" },
-    { src: "centralCity.JPG", alt: "Central City Image 1" },
+    { src: "ruinedBuilding.JPG", alt: "wellingtonFlat" },
+    { src: "building.jpg", alt: "hiddenBuildingImage" },
   ]
+
+  function goToNext() {
+    currentIndex = (currentIndex + 1) % images.length
+  }
+
+  function goToPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length
+  }
 </script>
 
 <main>
@@ -22,10 +31,17 @@
   <span class="textBox"><p>Simple and accurate.</p></span>
   <span class="textBox"><p>Work out your flat now.</p></span>
   <span class="textBox"><p>Made for students, by students.</p></span>
-  <div class="container-right">
-    <img class="mainImage" src="house.JPG" alt="Foggy house in Christchurch" />
-    <img class="fanImage" src="centralCity.JPG" alt="Hidden Image 1" />
-    <img class="fanImage" src="centralCity.JPG" alt="Hidden Image 2" />
+
+  <div class="carousel">
+    <button class="arrow left" on:click={goToPrev}>&lt;</button>
+    <div class="container-right">
+      <div class="carouselContainer">
+        <img class="carousel-image" src={images[currentIndex].src} alt={images[currentIndex].alt} />
+        <img class="fanImage" src="building.jpg" alt="hiddenBuildingImage" />
+        <img class="fanImage" src="ruinedBuilding.JPG" alt="ruinedBuildingChristchurch" />
+      </div>
+    </div>
+    <button class="arrow right" on:click={goToNext}>&gt;</button>
   </div>
   <span class="textRectangle"><p>No more stress over missed or late payments.</p></span> <span class="reviewBox"><p>Hello there</p></span>
   <span class="reviewBox"><p>Hello there</p></span><span class="reviewBox"><p>Hello there</p></span>
@@ -34,42 +50,36 @@
 </main>
 
 <style>
-  .container-right {
+  .carousel {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2vw;
+    position: relative;
+    margin: 10vw;
     margin-top: 10vw;
     margin-bottom: 5vw;
+  }
+  .carouselContainer {
     position: relative;
-  }
-  .container-right img {
-    width: 30%;
-    height: auto;
-    border-radius: 30px;
-  }
-  .mainImage {
-    width: 30%;
-    height: auto;
-    border-radius: 30px;
-    transition: transform 0.6s ease;
-    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .mainImage:hover {
-    transform: scale(1.03);
+  .carousel-image,
+  .fanImage {
+    width: 2vw;
+    height: 2vw;
+    border-radius: 30px;
+    transition: transform 0.6s ease;
   }
   .fanImage {
     position: absolute;
-    width: 5vw;
-    height: auto;
-    border-radius: 20px;
     opacity: 0;
     transition:
       transform 0.6s ease,
       opacity 0.6s ease;
   }
-
   .fanImage:nth-child(2) {
     transform: translateX(0px) rotate(0deg);
   }
@@ -84,6 +94,33 @@
   .container-right:hover .fanImage:nth-child(3) {
     transform: translateX(100px) rotate(10deg);
     opacity: 1;
+  }
+
+  .arrow {
+    color: black;
+    background-color: transparent;
+    border: none;
+    padding: 1vw;
+    font-size: 2vw;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+  }
+
+  .left {
+    left: -5vw;
+  }
+
+  .right {
+    right: -5vw;
+  }
+
+  .container-right img {
+    width: 30%;
+    height: auto;
+    border-radius: 30px;
   }
 
   .container {
