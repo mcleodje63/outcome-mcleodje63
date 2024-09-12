@@ -24,6 +24,7 @@
     <p>
       Pinterest icons created by <a href="https://www.flaticon.com/free-icons/pinterest" title="pinterest icons">Pixel perfect - Flaticon</a>
     </p>
+    <p>Various <a href="https://www.canva.com/templates/EAGHQZdbWW4-yellow-and-brown-minimalist-vintage-good-morning-animated-instagram-post/" title="templates">templates</a> from <a href="https://www.canva.com/templates/EAF9fsUI-MM-black-minimal-animated-video-new-reels-instagram-story/" title="canva">Canva</a></p>
     <p>
       All photos by <a href="https://nz.pinterest.com/jessieeemcleod/?invite_code=e72319c28e8c4f84baba0bae3aca7bac&sender=849913898336554695" title="pinterest icons">Jessie McLeod</a>
     </p>

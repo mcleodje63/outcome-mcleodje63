@@ -12,7 +12,6 @@
     <div class="img-wrapper">
       <img src="chchStreet.JPG" alt="" id="christchurchStreet" />
       <div class="overlay-text"><p>Do you know what you owe?</p></div>
-      <div class="overlay"><p>Flatters rights</p></div>
     </div>
     <div class="img-wrapper">
       <img src="skytower.JPG" alt="Auckland-skytower-night" id="skytower" />
@@ -135,27 +134,6 @@
     border-radius: 10px;
     font-weight: 700;
     margin-left: 3vw;
-  }
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      transform 0.5s ease,
-      opacity 0.5s ease;
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  .img-wrapper:hover .overlay-text {
-    transform: translateY(0);
-    opacity: 1;
   }
 
   hr {

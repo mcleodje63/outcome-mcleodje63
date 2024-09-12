@@ -17,6 +17,7 @@
   let overallTotal = 0
   let errorTimeout
   const maxFlatmates = 10
+  let validationErrors = Array(maxFlatmates).fill(false)
 
   onMount(() => {
     loadPeople()
@@ -44,6 +45,11 @@
       return
     } else {
       rentResponse = ""
+    }
+    if (people.some((person) => person.trim().length < 2)) {
+      rentResponse = "Invalid name: each name must be at least 2 letters long."
+      newRent = []
+      return
     }
     const totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0)
     const overallTotal = rent + totalUtilities
@@ -83,11 +89,17 @@
   }
 
   function addPerson() {
+    if (rent <= 0) {
+      rentResponse = "Please enter the rent amount before adding people."
+      return
+    }
     if (flatPop < maxFlatmates) {
       people = [...people, ""]
       rentPercent = [...rentPercent, 0]
+      validationErrors = [...validationErrors, false]
       flatPop = flatPop + 1
       savePeople()
+      fundCalculator()
     } else {
       rentResponse = "You can only add up to 10 flatmates."
     }
@@ -95,18 +107,24 @@
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
     rentPercent = [...rentPercent.slice(0, index), ...rentPercent.slice(index + 1)]
+    validationErrors = [...validationErrors.slice(0, index), ...validationErrors.slice(index + 1)]
     if (flatPop > 0) {
       flatPop = flatPop - 1
     } else {
       flatPop = 0
     }
     savePeople()
+    fundCalculator()
   }
 
   //utilies functions
 
   function addUtility() {
-    utilities = [...utilities, { name: "", value: 0, saved: false }]
+    if (flatPop <= 0) {
+      rentResponse = "Please add people before adding utilities."
+      return
+    }
+    utilities = [...utilities, { name: "", value: "", saved: false }]
   }
 
   function saveUtility(index) {
@@ -225,7 +243,7 @@
 </script>
 
 <Navigation />
-<head> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" /></head>
+
 <main>
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
@@ -247,13 +265,14 @@
           addPerson()
           loadPeople()
         }}
+        disabled={rent <= 0}
       >
         Add person
       </button>
       <div class="switchWrapper">
         <span class="label-text">{showPercentages ? "Even Splitting" : "Uneven Splitting %"}</span>
         <label class="switch">
-          <input type="checkbox" on:change={splitCalculator} />
+          <input type="checkbox" on:change={splitCalculator} disabled={flatPop <= 0} />
           <span class="slider"></span>
         </label>
       </div>
@@ -262,7 +281,7 @@
 
     {#each people as person, index}
       <div class="person">
-        <input class="userInput" placeholder="Flatemates name" bind:value={people[index]} />
+        <input class="userInput" placeholder="Flatemates name" bind:value={people[index]} on:input={(e) => validateName(e.target.value, index)} class:error={validationErrors[index]} />
 
         {#if showPercentages}
           <input class="inputPercent" placeholder="%" type="number" bind:value={rentPercent[index]} min="0" max="100" />
@@ -281,7 +300,7 @@
 
     <button class="resetButton" on:click={reset}>Reset</button>
 
-    <button class="addUtilitiesButton" on:click={addUtility}>Add Utilities</button>
+    <button class="addUtilitiesButton" on:click={addUtility} disabled={flatPop <= 0}>Add Utilities</button>
 
     {#each utilities as utility, index}
       <div class="utility">
@@ -298,7 +317,15 @@
               <p>Split {utility.name} among {flatPop} {flatPop === 1 ? "person" : "people"}: ${(utility.value / flatPop).toFixed(2)}</p>
             {:else}
               <p>Add people to split the {utility.name} cost.</p>
-            {/if} <button class="removeUtilityButton" on:click={() => removeUtility(index)}>🗑</button>
+            {/if}
+            <button
+              class="removeUtilityButton"
+              on:click={() => {
+                removeUtility(index)
+                fundCalculator()
+                loadPeople()
+              }}>🗑</button
+            >
           </div>
         {/if}
       </div>
@@ -309,6 +336,7 @@
         fundCalculator()
         loadPeople()
       }}
+      disabled={rent <= 0}
     >
       Get rent</button
     >
