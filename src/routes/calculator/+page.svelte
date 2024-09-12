@@ -29,18 +29,19 @@
       rentResponse = ""
     }, 5000)
   }
+  // $: buttonsDisabled = rent <= 0 || flatPop <= 0 || rentResponse
   function fundCalculator() {
     if (rent > 2000) {
-      rentResponse = "YOUR NUMBER IS TOO BIG"
+      rentResponse = "Your number is too big"
       newRent = []
       return
     } else if (rent < 1) {
       // or if  the utilies isnt right?
-      rentResponse = "YOUR NUMBER IS TOO SMALL"
+      rentResponse = "Your number is too small"
       newRent = []
       return
     } else if (isNaN(rent)) {
-      rentResponse = "INVALID PLEASE TRY AGAIN"
+      rentResponse = "Invalid please try again"
       newRent = []
       return
     } else {
@@ -97,7 +98,7 @@
       people = [...people, ""]
       rentPercent = [...rentPercent, 0]
       validationErrors = [...validationErrors, false]
-      flatPop = flatPop + 1
+      flatPop += 1
       savePeople()
       fundCalculator()
     } else {
@@ -265,14 +266,13 @@
           addPerson()
           loadPeople()
         }}
-        disabled={rent <= 0}
       >
         Add person
       </button>
       <div class="switchWrapper">
         <span class="label-text">{showPercentages ? "Even Splitting" : "Uneven Splitting %"}</span>
         <label class="switch">
-          <input type="checkbox" on:change={splitCalculator} disabled={flatPop <= 0} />
+          <input type="checkbox" on:change={splitCalculator} />
           <span class="slider"></span>
         </label>
       </div>
@@ -296,11 +296,9 @@
       <b>{rentResponse}</b>
     </div>
 
-    <!-- create boundries -->
-
     <button class="resetButton" on:click={reset}>Reset</button>
 
-    <button class="addUtilitiesButton" on:click={addUtility} disabled={flatPop <= 0}>Add Utilities</button>
+    <button class="addUtilitiesButton" on:click={addUtility}>Add Utilities</button>
 
     {#each utilities as utility, index}
       <div class="utility">
@@ -308,8 +306,7 @@
           <input class="utilityLabel" placeholder="Utility Name" bind:value={utility.name} on:input={(e) => updateUtilityName(index, e.target.value)} />
           <input class="utilityValue" type="number" placeholder="Enter utility cost" min="0" max="500" bind:value={utility.value} on:input={(e) => updateUtilityValue(index, e.target.value)} />
           <button class="saveUtilityButton" on:click={() => saveUtility(index)}>Save</button>
-          {#if utility.saved}{/if}
-        {:else}
+
           <div class="utilitySaved">
             <p><strong>{utility.name}</strong> cost: ${utility.value.toFixed(2)}</p>
             {#if flatPop > 0}
@@ -336,7 +333,6 @@
         fundCalculator()
         loadPeople()
       }}
-      disabled={rent <= 0}
     >
       Get rent</button
     >
