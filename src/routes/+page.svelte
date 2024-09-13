@@ -2,33 +2,6 @@
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
   import Navigation from "$lib/Navigation.svelte"
-  let currentIndex = 0
-  const images = [
-    { src: "adOne.jpg", alt: "Foggy house in Christchurch" },
-    { src: "adTwo.jpg", alt: "wellingtonFlat" },
-    { src: "adThree.jpg", alt: "hiddenBuildingImage" },
-  ]
-
-  function goToNext() {
-    const prevIndex = currentIndex
-    currentIndex = (currentIndex + 1) % images.length
-    document.querySelectorAll(".carousel-image")[prevIndex].classList.add("hidden")
-    document.querySelectorAll(".carousel-image")[currentIndex].classList.remove("hidden")
-  }
-
-  function goToPrev() {
-    const prevIndex = currentIndex
-    currentIndex = (currentIndex - 1 + images.length) % images.length
-    document.querySelectorAll(".carousel-image")[prevIndex].classList.add("hidden")
-    document.querySelectorAll(".carousel-image")[currentIndex].classList.remove("hidden")
-  }
-  let autoRotate = setInterval(goToNext, 4000)
-  function stopAutoRotate() {
-    clearInterval(autoRotate)
-  }
-  function startAutoRotate() {
-    autoRotate = setInterval(goToNext, 4000)
-  }
 </script>
 
 <main>
@@ -45,17 +18,6 @@
   <span class="textBox"><p>Work out your flat now.</p></span>
   <span class="textBox"><p>Made for students, by students.</p></span>
 
-  <div class="carousel" on:mouseenter={stopAutoRotate} on:mouseleave={startAutoRotate}>
-    <button class="arrow left" on:click={goToPrev}>&lt;</button>
-    <div class="container-right">
-      <div class="carouselContainer">
-        <img class="carousel-image" src={images[currentIndex].src} alt={images[currentIndex].alt} />
-        <img class="fanImage" src="ruinedBuilding.JPG" alt="hiddenBuildingImage" />
-        <img class="fanImage" src="building.jpg" alt="ruinedBuildingChristchurch" />
-      </div>
-    </div>
-    <button class="arrow right" on:click={goToNext}>&gt;</button>
-  </div>
   <span class="textRectangle"><p>No more stress over missed or late payments.</p></span>
   <span class="reviewBox"
     ><div class="numHead"><p>1.</p></div>
@@ -80,89 +42,6 @@
   .numHead {
     font-size: 4vw;
     margin-right: 2vw;
-  }
-  .carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 10vw;
-    margin-top: 5vw;
-    margin-bottom: 5vw;
-  }
-  .carouselContainer {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .carousel-image {
-    width: 60vw;
-    height: 20vw;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-    z-index: 2;
-    position: relative;
-    opacity: 1;
-  }
-
-  .numText {
-    font-size: 1.5vw;
-    margin-top: 1vw;
-  }
-
-  .fanImage {
-    position: absolute;
-    border-radius: 20px;
-    opacity: 0;
-    transition:
-      transform 0.6s ease,
-      opacity 0.6s ease;
-  }
-  .fanImage:nth-child(2) {
-    transform: translateX(0px) rotate(0deg);
-  }
-  .fanImage:nth-child(3) {
-    transform: translateX(0px) rotate(0deg);
-  }
-
-  .container-right:hover .fanImage:nth-child(2) {
-    transform: translateX(-100px) rotate(-10deg);
-    opacity: 1;
-  }
-  .container-right:hover .fanImage:nth-child(3) {
-    transform: translateX(100px) rotate(10deg);
-    opacity: 1;
-  }
-
-  .arrow {
-    color: rgb(138, 137, 137);
-    background-color: transparent;
-    border: none;
-    padding: 1vw;
-    font-size: 3vw;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 20;
-  }
-  .arrow:hover {
-    color: rgb(0, 0, 0);
-  }
-
-  .left {
-    left: 9vw;
-  }
-
-  .right {
-    right: 9vw;
-  }
-
-  .container-right img {
-    width: 30vw;
-    height: 43vw;
-    border-radius: 30px;
   }
 
   .container {
