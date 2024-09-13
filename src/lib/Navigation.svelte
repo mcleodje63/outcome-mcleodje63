@@ -14,7 +14,8 @@
       <h1>Flatter</h1>
     </a>
 
-    <a class="navbar-burger" on:click={toggleNav}>
+    <a class="navbar-burger" class:is-active={navVisible} on:click={toggleNav}>
+      <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -25,13 +26,15 @@
     <!-- Add your navigation links here -->
     <div class="navbar-start">
       <!-- Navbar items on the left -->
-      <a class="navbar-item" href="/">Home</a>
-      <a class="navbar-item" href="/calculator"> Calculator</a>
+      <a class="navbar-item" href="/learn">Learn</a> <a class="navbar-item" href="/calculator"> Calculator</a>
     </div>
   </div>
   <style>
     h1 {
       font-weight: bold;
+    }
+    a {
+      margin-right: 2vw;
     }
   </style>
 </nav>
