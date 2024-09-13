@@ -17,7 +17,6 @@
   let overallTotal = 0
   let errorTimeout
   const maxFlatmates = 10
-  let validationErrors = Array(maxFlatmates).fill(false)
 
   onMount(() => {
     loadPeople()
@@ -29,28 +28,22 @@
       rentResponse = ""
     }, 5000)
   }
-  // $: buttonsDisabled = rent <= 0 || flatPop <= 0 || rentResponse
   function fundCalculator() {
     if (rent > 2000) {
-      rentResponse = "Your number is too big"
+      rentResponse = "YOUR NUMBER IS TOO BIG"
       newRent = []
       return
     } else if (rent < 1) {
       // or if  the utilies isnt right?
-      rentResponse = "Your number is too small"
+      rentResponse = "YOUR NUMBER IS TOO SMALL"
       newRent = []
       return
     } else if (isNaN(rent)) {
-      rentResponse = "Invalid please try again"
+      rentResponse = "INVALID PLEASE TRY AGAIN"
       newRent = []
       return
     } else {
       rentResponse = ""
-    }
-    if (people.some((person) => person.trim().length < 2)) {
-      rentResponse = "Invalid name: each name must be at least 2 letters long."
-      newRent = []
-      return
     }
     const totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0)
     const overallTotal = rent + totalUtilities
@@ -90,17 +83,11 @@
   }
 
   function addPerson() {
-    if (rent <= 0) {
-      rentResponse = "Please enter the rent amount before adding people."
-      return
-    }
     if (flatPop < maxFlatmates) {
       people = [...people, ""]
       rentPercent = [...rentPercent, 0]
-      validationErrors = [...validationErrors, false]
-      flatPop += 1
+      flatPop = flatPop + 1
       savePeople()
-      fundCalculator()
     } else {
       rentResponse = "You can only add up to 10 flatmates."
     }
@@ -108,24 +95,18 @@
   function removePerson(index) {
     people = [...people.slice(0, index), ...people.slice(index + 1)]
     rentPercent = [...rentPercent.slice(0, index), ...rentPercent.slice(index + 1)]
-    validationErrors = [...validationErrors.slice(0, index), ...validationErrors.slice(index + 1)]
     if (flatPop > 0) {
       flatPop = flatPop - 1
     } else {
       flatPop = 0
     }
     savePeople()
-    fundCalculator()
   }
 
   //utilies functions
 
   function addUtility() {
-    if (flatPop <= 0) {
-      rentResponse = "Please add people before adding utilities."
-      return
-    }
-    utilities = [...utilities, { name: "", value: "", saved: false }]
+    utilities = [...utilities, { name: "", value: 0, saved: false }]
   }
 
   function saveUtility(index) {
@@ -244,7 +225,7 @@
 </script>
 
 <Navigation />
-
+<head> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" /></head>
 <main>
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
@@ -281,7 +262,7 @@
 
     {#each people as person, index}
       <div class="person">
-        <input class="userInput" placeholder="Flatemates name" bind:value={people[index]} on:input={(e) => validateName(e.target.value, index)} class:error={validationErrors[index]} />
+        <input class="userInput" placeholder="Flatemates name" bind:value={people[index]} />
 
         {#if showPercentages}
           <input class="inputPercent" placeholder="%" type="number" bind:value={rentPercent[index]} min="0" max="100" />
@@ -296,6 +277,8 @@
       <b>{rentResponse}</b>
     </div>
 
+    <!-- create boundries -->
+
     <button class="resetButton" on:click={reset}>Reset</button>
 
     <button class="addUtilitiesButton" on:click={addUtility}>Add Utilities</button>
@@ -306,7 +289,8 @@
           <input class="utilityLabel" placeholder="Utility Name" bind:value={utility.name} on:input={(e) => updateUtilityName(index, e.target.value)} />
           <input class="utilityValue" type="number" placeholder="Enter utility cost" min="0" max="500" bind:value={utility.value} on:input={(e) => updateUtilityValue(index, e.target.value)} />
           <button class="saveUtilityButton" on:click={() => saveUtility(index)}>Save</button>
-
+          {#if utility.saved}{/if}
+        {:else}
           <div class="utilitySaved">
             <p><strong>{utility.name}</strong> cost: ${utility.value.toFixed(2)}</p>
             {#if flatPop > 0}
@@ -314,15 +298,7 @@
               <p>Split {utility.name} among {flatPop} {flatPop === 1 ? "person" : "people"}: ${(utility.value / flatPop).toFixed(2)}</p>
             {:else}
               <p>Add people to split the {utility.name} cost.</p>
-            {/if}
-            <button
-              class="removeUtilityButton"
-              on:click={() => {
-                removeUtility(index)
-                fundCalculator()
-                loadPeople()
-              }}>🗑</button
-            >
+            {/if} <button class="removeUtilityButton" on:click={() => removeUtility(index)}>🗑</button>
           </div>
         {/if}
       </div>
