@@ -225,7 +225,7 @@
 </script>
 
 <Navigation />
-<head> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" /></head>
+
 <main>
   <span class="imgContainer"> <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" /></span>
 
@@ -246,12 +246,13 @@
         on:click={() => {
           addPerson()
           loadPeople()
+          fundCalculator()
         }}
       >
         Add person
       </button>
       <div class="switchWrapper">
-        <span class="label-text">{showPercentages ? "Even Splitting" : "Uneven Splitting %"}</span>
+        <span class="label-text">{showPercentages ? "Uneven Splitting %" : "Even Splitting"}</span>
         <label class="switch">
           <input type="checkbox" on:change={splitCalculator} />
           <span class="slider"></span>
@@ -269,7 +270,13 @@
           <!-- make this save too -->
         {/if}
 
-        <button class="removeButton" on:click={() => removePerson(index)}>🗑</button>
+        <button
+          class="removeButton"
+          on:click={() => {
+            removePerson(index)
+            fundCalculator()
+          }}>🗑</button
+        >
       </div>
     {/each}
 
@@ -298,7 +305,14 @@
               <p>Split {utility.name} among {flatPop} {flatPop === 1 ? "person" : "people"}: ${(utility.value / flatPop).toFixed(2)}</p>
             {:else}
               <p>Add people to split the {utility.name} cost.</p>
-            {/if} <button class="removeUtilityButton" on:click={() => removeUtility(index)}>🗑</button>
+            {/if}
+            <button
+              class="removeUtilityButton"
+              on:click={() => {
+                removeUtility(index)
+                fundCalculator()
+              }}>🗑</button
+            >
           </div>
         {/if}
       </div>

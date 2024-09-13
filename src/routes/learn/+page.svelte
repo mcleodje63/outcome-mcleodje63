@@ -110,6 +110,9 @@
     border-radius: 10px;
     font-weight: 700;
     margin-left: 3vw;
+    text-shadow:
+      2px 2px 5px rgba(0, 0, 0, 0.7),
+      4px 4px 10px rgba(0, 0, 0, 0.5);
   }
   img {
     border-radius: 5%;
