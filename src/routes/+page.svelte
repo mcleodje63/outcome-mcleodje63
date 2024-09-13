@@ -64,12 +64,13 @@
     font-size: 1.5vw;
     font-family: "Inter", sans-serif;
     font-weight: 700;
-    margin: 3.5vw;
+    margin: 3vw;
+    margin-top: 6vh;
     border: 0.4vw solid #407938;
     border-radius: 20px;
     position: absolute;
     top: 14vw;
-    left: 1.15vh;
+    left: 1vw;
   }
   .calculatorButton:hover {
     background-color: transparent;
@@ -117,6 +118,7 @@
     margin: 2.5vw;
     margin-left: 3vw;
     padding: 2vw;
+    font-size: 2vw;
 
     transition:
       transform 0.3s ease,
