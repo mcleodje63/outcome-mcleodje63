@@ -25,7 +25,7 @@
   // -----------------------
   // Reactive calculations
   // -----------------------
-  $: totalUtilities = utilities.reduce((acc, utility) => acc + (Number(utility.value) || 0), 0)
+  $: totalUtilities = utilities.reduce((acc, u) => acc + (Number(u.value) || 0), 0)
 
   $: overallTotal = Number(rent) + totalUtilities
 
@@ -37,7 +37,7 @@
     loadUtilities()
   })
 
-  // Auto-clear error message
+  // Auto-clear message
   $: if (rentResponse) {
     clearTimeout(errorTimeout)
     errorTimeout = setTimeout(() => {
@@ -49,9 +49,9 @@
   // Validation
   // -----------------------
   function validateRent() {
+    if (isNaN(rent) || rent === "") return "Invalid, please try again"
     if (rent > 2000) return "Your number is too big"
     if (rent < 1) return "Your number is too small"
-    if (isNaN(rent)) return "Invalid, please try again"
     return ""
   }
 
@@ -69,7 +69,7 @@
   // People logic
   // -----------------------
   function addPerson() {
-    if (rent <= 0) {
+    if (!rent || rent <= 0) {
       rentResponse = "Please enter the rent amount before adding people."
       return
     }
@@ -84,8 +84,6 @@
     validationErrors = [...validationErrors, false]
 
     flatPop += 1
-
-    savePeople()
   }
 
   function removePerson(index) {
@@ -93,9 +91,7 @@
     rentPercent = rentPercent.filter((_, i) => i !== index)
     validationErrors = validationErrors.filter((_, i) => i !== index)
 
-    flatPop = Math.max(0, flatPop - 1)
-
-    savePeople()
+    flatPop = people.length
   }
 
   // -----------------------
@@ -103,7 +99,7 @@
   // -----------------------
   function splitCalculator() {
     showPercentages = !showPercentages
-    validateRent()
+    rentResponse = validateRent()
   }
 
   function reset() {
@@ -142,17 +138,21 @@
   }
 
   // -----------------------
-  // Persistence stubs
+  // Persistence (stubs)
   // -----------------------
   function loadPeople() {}
-  function savePeople() {}
   function loadUtilities() {}
 
   // -----------------------
-  // Main action
+  // Main calculation
   // -----------------------
   function calculateRent() {
-    validateRent()
+    const error = validateRent()
+    if (error) {
+      rentResponse = error
+      return
+    }
+
     showRentDetails = true
 
     if (people.length === 0) {
@@ -163,7 +163,7 @@
     const baseShare = rent / people.length
 
     newRent = people.map((name, i) => {
-      const percent = rentPercent[i] || 0
+      const percent = Number(rentPercent[i]) || 0
       const amount = showPercentages ? (rent * percent) / 100 : baseShare
 
       return {
