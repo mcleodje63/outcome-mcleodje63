@@ -1,247 +1,76 @@
 <script>
-  import { onMount } from "svelte"
-  import Header from "$lib/Header.svelte"
-  import Footer from "$lib/Footer.svelte"
-  import Navigation from "$lib/Navigation.svelte"
+  import { onMount } from "svelte";
+  import Header from "$lib/Header.svelte";
+  import Footer from "$lib/Footer.svelte";
+  import Navigation from "$lib/Navigation.svelte";
 
-  let rent = 0
-  let flatPop = 0
-  let newRent = 0
-  let rentResponse = ""
-  let people = []
-  let rentPercent = []
-  let showPercentages = false
-  let showRentDetails = false
-  let utilities = []
-  let totalUtilities = 0
-  let overallTotal = 0
-  let errorTimeout
-  const maxFlatmates = 10
-  let validationErrors = Array(maxFlatmates).fill(false)
+  const maxFlatmates = 10;
+  let rent = 0;
+  let flatPop = 0;
+  let newRent = [];
+  let rentResponse = "";
+  let people = [];
+  let rentPercent = [];
+  let utilities = [];
+  let showPercentages = false;
+  let showRentDetails = false;
+  let validationErrors = Array(maxFlatmates).fill(false);
+  let errorTimeout;
+
+  // Reactive calculations
+  $: totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0);
+  $: overallTotal = rent + totalUtilities;
 
   onMount(() => {
-    loadPeople()
-    loadUtilities()
-  })
+    loadPeople();
+    loadUtilities();
+  });
+
   $: if (rentResponse) {
-    clearTimeout(errorTimeout)
+    clearTimeout(errorTimeout);
     errorTimeout = setTimeout(() => {
-      rentResponse = ""
-    }, 5000)
+      rentResponse = "";
+    }, 5000);
   }
-  // $: buttonsDisabled = rent <= 0 || flatPop <= 0 || rentResponse
-  function fundCalculator() {
-    if (rent > 2000) {
-      rentResponse = "Your number is too big"
-      newRent = []
-      return
-    } else if (rent < 1) {
-      // or if  the utilies isnt right?
-      rentResponse = "Your number is too small"
-      newRent = []
-      return
-    } else if (isNaN(rent)) {
-      rentResponse = "Invalid please try again"
-      newRent = []
-      return
-    } else {
-      rentResponse = ""
-    }
-    if (people.some((person) => person.trim().length < 2)) {
-      rentResponse = "Invalid name: each name must be at least 2 letters long."
-      newRent = []
-      return
-    }
-    const totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0)
-    const overallTotal = rent + totalUtilities
 
-    if (showPercentages) {
-      let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
-      if (totalPercent !== 100) {
-        rentResponse = "PERCENTAGES MUST ADD UP TO 100%"
-        newRent = []
-        return
-      }
-
-      newRent = people.map((person, index) => {
-        const percent = parseFloat(rentPercent[index]) || 0
-        const amount = parseFloat((overallTotal * (percent / 100)).toFixed(2))
-        return {
-          name: person || "Unnamed",
-          percent: percent,
-          amount: amount.toFixed(2),
-        }
-      })
-    } else {
-      if (flatPop > 0) {
-        const amount = (overallTotal / flatPop).toFixed(2)
-        newRent = [{ amount }]
-      } else {
-        newRent = []
-        rentResponse = "Add people to split the rent."
-      }
-    }
-    showRentDetails = true
-    savePeople()
+  function validateRent() {
+    if (rent > 2000) return "Your number is too big";
+    if (rent < 1) return "Your number is too small";
+    if (isNaN(rent)) return "Invalid, please try again";
+    return "";
   }
+
+  $: if (people.some((person) => person.trim().length < 2)) {
+    rentResponse = "Invalid name: each name must be at least 2 letters long.";
+    newRent = [];
+  }
+
   function splitCalculator() {
-    showPercentages = !showPercentages
-    fundCalculator()
+    showPercentages = !showPercentages;
+    validateRent();
   }
 
   function addPerson() {
     if (rent <= 0) {
-      rentResponse = "Please enter the rent amount before adding people."
-      return
+      rentResponse = "Please enter the rent amount before adding people.";
+      return;
     }
     if (flatPop < maxFlatmates) {
-      people = [...people, ""]
-      rentPercent = [...rentPercent, 0]
-      validationErrors = [...validationErrors, false]
-      flatPop += 1
-      savePeople()
-      fundCalculator()
+      people = [...people, ""];
+      rentPercent = [...rentPercent, 0];
+      validationErrors = [...validationErrors, false];
+      flatPop += 1;
+      savePeople();
+      validateRent();
     } else {
-      rentResponse = "You can only add up to 10 flatmates."
+      rentResponse = "You can only add up to 10 flatmates.";
     }
   }
+
   function removePerson(index) {
-    people = [...people.slice(0, index), ...people.slice(index + 1)]
-    rentPercent = [...rentPercent.slice(0, index), ...rentPercent.slice(index + 1)]
-    validationErrors = [...validationErrors.slice(0, index), ...validationErrors.slice(index + 1)]
-    if (flatPop > 0) {
-      flatPop = flatPop - 1
-    } else {
-      flatPop = 0
-    }
-    savePeople()
-    fundCalculator()
-  }
-
-  //utilies functions
-
-  function addUtility() {
-    if (flatPop <= 0) {
-      rentResponse = "Please add people before adding utilities."
-      return
-    }
-    utilities = [...utilities, { name: "", value: "", saved: false }]
-  }
-
-  function saveUtility(index) {
-    utilities[index].saved = true
-    saveUtilities()
-
-    totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0)
-    overallTotal = rent + totalUtilities
-    if (newRent.length > 0) {
-      if (flatPop > 0) {
-        const utilityPerPerson = totalUtilities / flatPop
-        newRent = newRent.map((rentDetail) => {
-          return {
-            ...rentDetail,
-            amount: (parseFloat(rentDetail.amount) + utilityPerPerson).toFixed(2),
-          }
-        })
-      } else {
-        newRent = [{ amount: totalUtilities.toFixed(2) }]
-      }
-    } else {
-      if (flatPop > 0) {
-        const utilityPerPerson = totalUtilities / flatPop
-        newRent = people.map(() => ({ amount: utilityPerPerson.toFixed(2) }))
-      } else {
-        newRent = [{ amount: totalUtilities.toFixed(2) }]
-      }
-    }
-    updateTotals()
-  }
-
-  function updateUtilityName(index, name) {
-    utilities[index].name = name
-  }
-  function updateUtilityValue(index, value) {
-    utilities[index].value = parseFloat(value) || 0
-    //change this? So theres not a random 0?
-  }
-  function removeUtility(index) {
-    utilities = [...utilities.slice(0, index), ...utilities.slice(index + 1)]
-    saveUtilities()
-
-    updateTotals()
-  }
-  function saveUtilities() {
-    localStorage.utilities = JSON.stringify(utilities)
-  }
-
-  function loadUtilities() {
-    if (localStorage.utilities) {
-      utilities = JSON.parse(localStorage.utilities)
-    }
-  }
-  function updateTotals() {
-    totalUtilities = utilities.reduce((acc, utility) => acc + utility.value, 0)
-    overallTotal = rent + totalUtilities
-
-    // Update the rent split calculation
-    if (showPercentages) {
-      let totalPercent = rentPercent.reduce((acc, percent) => acc + parseFloat(percent), 0)
-      if (totalPercent !== 100) {
-        rentResponse = "PERCENTAGES MUST ADD UP TO 100%"
-        newRent = []
-        return
-      }
-
-      newRent = people.map((person, index) => {
-        const percent = parseFloat(rentPercent[index]) || 0
-        const amount = parseFloat((overallTotal * (percent / 100)).toFixed(2))
-        return {
-          name: person || "Unnamed",
-          percent: percent,
-          amount: amount.toFixed(2),
-        }
-      })
-    } else {
-      if (flatPop > 0) {
-        const amount = (overallTotal / flatPop).toFixed(2)
-        newRent = [{ amount }]
-      } else {
-        newRent = []
-        rentResponse = "Add people to split the rent."
-      }
-    }
-
-    showRentDetails = true
-  }
-
-  function savePeople() {
-    localStorage.flatmates = JSON.stringify(people)
-    localStorage.rentPercent = JSON.stringify(rentPercent)
-    localStorage.flatRent = JSON.stringify(rent)
-  }
-
-  function loadPeople() {
-    if (localStorage.flatmates) {
-      people = JSON.parse(localStorage.flatmates)
-      rentPercent = JSON.parse(localStorage.rentPercent)
-      flatPop = people.length
-      rent = JSON.parse(localStorage.flatRent) || 0
-    }
-  }
-  function reset() {
-    rent = 0
-    flatPop = 0
-    newRent = 0
-    rentResponse = ""
-    people = []
-    rentPercent = []
-    localStorage.clear()
-    utilities = []
-    totalUtilities = 0
-    overallTotal = 0
-    showRentDetails = false
-  }
-</script>
+    people = [...people.slice(0, index), ...people.slice(index + 1)];
+    rentPercent = [...rentPercent.slice(0, index), ...rentPercent.slice(index + 1)];
+    validationErrors}
 
 <Navigation />
 
@@ -319,7 +148,7 @@
               class="removeUtilityButton"
               on:click={() => {
                 removeUtility(index)
-                fundCalculator()
+                validateRent
                 loadPeople()
               }}>🗑</button
             >
@@ -330,7 +159,7 @@
     <button
       class="btn-hover"
       on:click={() => {
-        fundCalculator()
+        validateRent
         loadPeople()
       }}
     >
