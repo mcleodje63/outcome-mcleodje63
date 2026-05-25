@@ -20,7 +20,6 @@
   let showRentDetails = false
 
   let validationErrors = []
-
   let errorTimeout
 
   // -----------------------
@@ -57,13 +56,12 @@
   }
 
   function validateName(name, index) {
-    if (!validationErrors[index]) validationErrors[index] = false
+    const isInvalid = !name || name.trim().length < 2
 
-    if (!name || name.trim().length < 2) {
-      validationErrors[index] = true
+    validationErrors = validationErrors.map((v, i) => (i === index ? isInvalid : v))
+
+    if (isInvalid) {
       rentResponse = "Each name must be at least 2 letters long."
-    } else {
-      validationErrors[index] = false
     }
   }
 
@@ -121,23 +119,22 @@
   }
 
   // -----------------------
-  // Utilities (minimal working stubs)
+  // Utilities
   // -----------------------
   function addUtility() {
     utilities = [...utilities, { name: "", value: 0, saved: false, editing: true }]
   }
 
   function updateUtilityName(index, value) {
-    utilities[index].name = value
+    utilities = utilities.map((u, i) => (i === index ? { ...u, name: value } : u))
   }
 
   function updateUtilityValue(index, value) {
-    utilities[index].value = Number(value)
+    utilities = utilities.map((u, i) => (i === index ? { ...u, value: Number(value) } : u))
   }
 
   function saveUtility(index) {
-    utilities[index].saved = true
-    utilities[index].editing = false
+    utilities = utilities.map((u, i) => (i === index ? { ...u, saved: true, editing: false } : u))
   }
 
   function removeUtility(index) {
@@ -147,17 +144,9 @@
   // -----------------------
   // Persistence stubs
   // -----------------------
-  function loadPeople() {
-    // placeholder (replace with localStorage if you want)
-  }
-
-  function savePeople() {
-    // placeholder (replace with localStorage if you want)
-  }
-
-  function loadUtilities() {
-    // placeholder
-  }
+  function loadPeople() {}
+  function savePeople() {}
+  function loadUtilities() {}
 
   // -----------------------
   // Main action
@@ -175,7 +164,6 @@
 
     newRent = people.map((name, i) => {
       const percent = rentPercent[i] || 0
-
       const amount = showPercentages ? (rent * percent) / 100 : baseShare
 
       return {
