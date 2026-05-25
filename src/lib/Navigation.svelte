@@ -1,4 +1,3 @@
-<!-- add mobile friendly hamburger. -->
 <script>
   let navVisible = false
 
