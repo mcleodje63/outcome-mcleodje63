@@ -18,6 +18,7 @@
   <div class="nav-links" class:is-active={navVisible}>
     <a href="/learn">Learn</a>
     <a href="/calculator">Calculator</a>
+    <a href="/groceries">Groceries</a>
     <a href="/contact-us">Contact</a>
   </div>
 </nav>
