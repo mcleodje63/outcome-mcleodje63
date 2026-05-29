@@ -13,12 +13,12 @@
       <h1>Flatter</h1>
     </a>
 
-    <a class="navbar-burger" class:is-active={navVisible} on:click={toggleNav}>
+    <button class="navbar-burger" class:is-active={navVisible} type="button" aria-label="Toggle navigation" aria-expanded={navVisible} on:click={toggleNav}>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
-    </a>
+    </button>
   </div>
 
   <div class="navbar-menu" class:is-active={navVisible}>
@@ -34,6 +34,10 @@
     }
     a {
       margin-right: 2vw;
+    }
+    button {
+      background: transparent;
+      border: 0;
     }
   </style>
 </nav>
