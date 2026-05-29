@@ -236,6 +236,11 @@
   }
 
   $: if (hasLoadedSavedState) {
+    rent
+    people
+    rentPercent
+    utilities
+    showPercentages
     saveState()
   }
 
@@ -276,107 +281,418 @@
 <Navigation />
 
 <main>
-  <span class="imgContainer">
-    <img src="hillTree.JPG" style="max-width: 100%;" alt="tree on hill" />
-  </span>
-
-  <div class="header">
-    <Header title="Start calculating" subtitle="Right now." />
-  </div>
-
-  <div class="calcFunction">
-    <div class="calcHead">
-      <p>Welcome to Flatter</p>
+  <section class="calculator-hero">
+    <img src="/hillTree.JPG" alt="Tree on a hill" />
+    <div class="hero-content">
+      <Header title="Start calculating" subtitle="Autosaves as you type." eyebrow="Calculator" />
     </div>
+  </section>
 
-    <p>How much rent does your flat pay per week?</p>
+  <section class="section">
+    <div class="page-shell calculator-layout">
+      <div class="calculator-card">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Weekly rent</p>
+            <h2>Flat details</h2>
+          </div>
+          <span class="autosave-badge">Autosaved</span>
+        </div>
 
-    <input class="userInput" type="number" bind:value={rent} min="1" max="2000" />
-
-    <div class="buttonWrapper">
-      <button class="addButton" on:click={addPerson}> Add person </button>
-
-      <div class="switchWrapper">
-        <span class="label-text">
-          {showPercentages ? "Even Splitting" : "Uneven Splitting %"}
-        </span>
-
-        <label class="switch">
-          <input type="checkbox" bind:checked={showPercentages} on:change={splitCalculator} />
-          <span class="slider"></span>
+        <label class="field-group">
+          <span>How much rent does your flat pay per week?</span>
+          <input class="form-input" type="number" bind:value={rent} min="1" max="2000" placeholder="0.00" />
         </label>
-      </div>
-    </div>
 
-    {#each people as person, index}
-      <div class="person">
-        <input class="userInput" placeholder="Flatmate name" bind:value={people[index]} on:input={(e) => validateName(e.target.value, index)} class:error={validationErrors[index]} />
+        <div class="actions-row">
+          <button class="primary-action" type="button" on:click={addPerson}>Add person</button>
 
-        {#if showPercentages}
-          <input class="inputPercent" type="number" min="0" max="100" bind:value={rentPercent[index]} />
-        {/if}
+          <label class="toggle-control">
+            <span>{showPercentages ? "Uneven percentage split" : "Even split"}</span>
+            <input type="checkbox" bind:checked={showPercentages} on:change={splitCalculator} />
+          </label>
+        </div>
 
-        <button class="removeButton" on:click={() => removePerson(index)}> 🗑 </button>
-      </div>
-    {/each}
+        <div class="people-list">
+          {#each people as person, index}
+            <div class="person-row">
+              <label>
+                <span>Flatmate {index + 1}</span>
+                <input class="form-input" placeholder="Flatmate name" bind:value={people[index]} on:input={(e) => validateName(e.target.value, index)} class:error={validationErrors[index]} />
+              </label>
 
-    <div class="errorMessage">
-      <b>{rentResponse}</b>
-    </div>
+              {#if showPercentages}
+                <label class="percent-field">
+                  <span>Percent</span>
+                  <input class="form-input" type="number" min="0" max="100" bind:value={rentPercent[index]} />
+                </label>
+              {/if}
 
-    <button class="resetButton" on:click={reset}> Reset </button>
-
-    <button class="addUtilitiesButton" on:click={addUtility}> Add Utilities </button>
-
-    {#each utilities as utility, index}
-      <div class="utility">
-        <input class="utilityLabel" placeholder="Utility Name" bind:value={utility.name} on:input={(e) => updateUtilityName(index, e.target.value)} />
-
-        <input class="utilityValue" type="number" min="0" max="500" bind:value={utility.value} on:input={(e) => updateUtilityValue(index, e.target.value)} />
-
-        <button class="saveUtilityButton" on:click={() => saveUtility(index)}> Save </button>
-
-        {#if utility.saved}
-          <p>
-            <strong>{utility.name}</strong>: ${utility.value.toFixed(2)}
-          </p>
-
-          {#if flatPop > 0}
-            <p>
-              Split among {flatPop} people: ${(utility.value / flatPop).toFixed(2)}
-            </p>
-          {/if}
-
-          <button class="removeUtilityButton" on:click={() => removeUtility(index)}> 🗑 </button>
-        {/if}
-      </div>
-    {/each}
-
-    <button class="btn-hover" on:click={calculateRent}> Get rent </button>
-
-    {#if showRentDetails}
-      <div class="calcAnswers">
-        <p>Your flat pays ${rent} a week</p>
-        {#if totalUtilities > 0}
-          <p>Utilities add ${totalUtilities.toFixed(2)} a week</p>
-          <p>Total weekly cost is ${overallTotal.toFixed(2)}</p>
-        {/if}
-        <p>
-          There {flatPop === 1 ? "is" : "are"}
-          {flatPop}
-          {flatPop === 1 ? "person" : "people"} in your flat
-        </p>
-
-        {#if newRent.length > 0}
-          {#each newRent as rentDetail}
-            <p>{rentDetail.name} = ${rentDetail.amount}</p>
+              <button class="ghost-action" type="button" on:click={() => removePerson(index)}>Remove</button>
+            </div>
           {/each}
-        {:else}
-          <p>No rent details available</p>
+        </div>
+
+        {#if rentResponse}
+          <div class="errorMessage" role="status">
+            <b>{rentResponse}</b>
+          </div>
         {/if}
       </div>
-    {/if}
-  </div>
+
+      <div class="calculator-card">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Bills</p>
+            <h2>Utilities</h2>
+          </div>
+          <button class="secondary-action" type="button" on:click={addUtility}>Add utility</button>
+        </div>
+
+        {#if utilities.length === 0}
+          <p class="empty-state">Add power, internet, water, or any shared weekly cost.</p>
+        {/if}
+
+        <div class="utility-list">
+          {#each utilities as utility, index}
+            <div class="utility">
+              <input class="form-input" placeholder="Utility name" bind:value={utility.name} on:input={(e) => updateUtilityName(index, e.target.value)} />
+
+              <input class="form-input" type="number" min="0" max="500" bind:value={utility.value} on:input={(e) => updateUtilityValue(index, e.target.value)} />
+
+              <div class="utility-actions">
+                <button class="secondary-action" type="button" on:click={() => saveUtility(index)}>Save</button>
+                <button class="ghost-action" type="button" on:click={() => removeUtility(index)}>Remove</button>
+              </div>
+
+              {#if utility.saved}
+                <p class="utility-summary">
+                  <strong>{utility.name}</strong>: ${utility.value.toFixed(2)}
+                  {#if flatPop > 0}
+                    <span> ${(utility.value / flatPop).toFixed(2)} each</span>
+                  {/if}
+                </p>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <aside class="summary-card">
+        <p class="eyebrow">Results</p>
+        <h2>Weekly split</h2>
+        <div class="summary-metric">
+          <span>Total weekly cost</span>
+          <strong>${overallTotal.toFixed(2)}</strong>
+        </div>
+        <div class="summary-metric">
+          <span>Flatmates</span>
+          <strong>{flatPop}</strong>
+        </div>
+
+        <button class="primary-action wide" type="button" on:click={calculateRent}>Get rent</button>
+        <button class="ghost-action wide" type="button" on:click={reset}>Reset</button>
+
+        {#if showRentDetails}
+          <div class="calcAnswers">
+            <p>Your flat pays ${rent} a week</p>
+            {#if totalUtilities > 0}
+              <p>Utilities add ${totalUtilities.toFixed(2)} a week</p>
+            {/if}
+
+            {#if newRent.length > 0}
+              {#each newRent as rentDetail}
+                <div class="result-row">
+                  <span>{rentDetail.name}</span>
+                  <strong>${rentDetail.amount}</strong>
+                </div>
+              {/each}
+            {:else}
+              <p>No rent details available</p>
+            {/if}
+          </div>
+        {/if}
+      </aside>
+    </div>
+  </section>
 </main>
 
 <Footer />
+
+<style>
+  .calculator-hero {
+    position: relative;
+    min-height: clamp(340px, 48vh, 520px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: var(--brand-dark);
+  }
+
+  .calculator-hero > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .calculator-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(15, 27, 17, 0.84), rgba(15, 27, 17, 0.28));
+  }
+
+  .calculator-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.45fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .calculator-card,
+  .summary-card {
+    padding: clamp(20px, 3vw, 30px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: 0 18px 45px rgba(35, 53, 38, 0.08);
+  }
+
+  .calculator-card {
+    grid-column: 1;
+  }
+
+  .summary-card {
+    position: sticky;
+    top: 92px;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--brand-dark);
+    font-size: clamp(1.45rem, 3vw, 2.2rem);
+    font-weight: 900;
+  }
+
+  .field-group,
+  .person-row label,
+  .percent-field {
+    display: grid;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 750;
+  }
+
+  .actions-row,
+  .person-row,
+  .utility {
+    display: grid;
+    gap: 12px;
+  }
+
+  .actions-row {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    margin: 18px 0;
+  }
+
+  .people-list,
+  .utility-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .person-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: end;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fbfcfa;
+  }
+
+  .percent-field {
+    width: 120px;
+  }
+
+  .utility {
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fbfcfa;
+  }
+
+  .utility-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .utility-summary,
+  .empty-state,
+  .calcAnswers p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .utility-summary span {
+    color: var(--brand);
+    font-weight: 800;
+  }
+
+  .primary-action,
+  .secondary-action,
+  .ghost-action {
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    font-weight: 850;
+  }
+
+  .primary-action {
+    border: 1px solid var(--brand);
+    background: var(--brand);
+    color: white;
+    box-shadow: 0 12px 30px rgba(49, 95, 60, 0.2);
+  }
+
+  .secondary-action {
+    border: 1px solid var(--line);
+    background: var(--surface-soft);
+    color: var(--brand-dark);
+  }
+
+  .ghost-action {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+  }
+
+  .wide {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .autosave-badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--surface-soft);
+    color: var(--brand);
+    font-size: 0.8rem;
+    font-weight: 850;
+  }
+
+  .toggle-control {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-weight: 800;
+  }
+
+  .toggle-control input {
+    width: 46px;
+    height: 24px;
+    accent-color: var(--brand);
+  }
+
+  .errorMessage {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 1px solid rgba(151, 56, 42, 0.2);
+    border-radius: var(--radius);
+    background: #fff0ec;
+    color: #8d3124;
+  }
+
+  .error {
+    border-color: #b94b3d;
+    background: #fff7f5;
+  }
+
+  .summary-metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .summary-metric span {
+    color: var(--muted);
+    font-weight: 750;
+  }
+
+  .summary-metric strong {
+    color: var(--brand-dark);
+    font-size: 1.6rem;
+    font-weight: 900;
+  }
+
+  .calcAnswers {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .result-row strong {
+    color: var(--brand);
+    font-size: 1.15rem;
+  }
+
+  @media (max-width: 920px) {
+    .calculator-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .calculator-card,
+    .summary-card {
+      grid-column: auto;
+    }
+
+    .summary-card {
+      position: static;
+      grid-row: auto;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .actions-row,
+    .person-row {
+      grid-template-columns: 1fr;
+    }
+
+    .toggle-control {
+      justify-self: start;
+    }
+
+    .percent-field {
+      width: 100%;
+    }
+  }
+</style>

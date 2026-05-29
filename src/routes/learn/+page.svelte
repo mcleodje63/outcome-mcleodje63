@@ -1,159 +1,89 @@
 <script>
-  import Navigation from "$lib/Navigation.svelte"
   import Footer from "$lib/Footer.svelte"
+  import Navigation from "$lib/Navigation.svelte"
 </script>
 
 <Navigation />
 
 <main>
-  <body>
-    <h1>All sorted.</h1>
-    <div class="img-container">
-      <div class="img-wrapper">
-        <img src="chchStreet.JPG" alt="" id="christchurchStreet" />
-        <div class="overlay-text"><p>Do you know what you owe?</p></div>
-      </div>
-      <div class="img-wrapper">
-        <img src="skytower.JPG" alt="Auckland-skytower-night" id="skytower" />
-        <div class="overlay-text">
-          <p>Squashing payments.</p>
-        </div>
-      </div>
-      <div class="img-wrapper">
-        <img src="concertMtSmart.jpg" alt="HSLOTMtSmart" id="mtSmart" />
-        <div class="overlay-text">
-          <p>More time to do what you love.</p>
-        </div>
-      </div>
+  <section class="hero-panel compact">
+    <img src="/chchStreet.JPG" alt="Christchurch street" />
+    <div class="hero-content">
+      <p class="eyebrow">How it helps</p>
+      <h1 class="hero-title">All sorted.</h1>
+      <p class="hero-copy">Bring rent, utilities, and flatmate shares into one clear weekly view.</p>
     </div>
+  </section>
 
-    <div class="container-right">
-      <div class="text-left slide-in">
-        <h1>All Sorted.</h1>
-        <hr />
-        <p>All your stuff in one place, no more confusing spreadsheets or rushed group texts.</p>
-      </div>
-      <img src="centralCity.JPG" alt="Christchurch shops" id="christchurchShop" />
-    </div>
+  <section class="section">
+    <div class="page-shell">
+      <h2 class="section-title">Designed around the real flat workflow.</h2>
+      <p class="section-copy">The calculator works best when you want a quick answer, but the structure also supports the small changes that happen in shared homes.</p>
 
-    <div class="container-left">
-      <img src="mountain.png" alt="mountain" id="mountain" />
-      <div class="text-right slide-in">
-        <h1>Loved by everyone.</h1>
-        <p>Designed for university students in New Zealand, but anyone can use it.</p>
-        <hr />
+      <div class="feature-grid">
+        <article class="feature-card image-card">
+          <img src="/skytower.JPG" alt="Auckland skyline at night" />
+          <h3>Know what you owe</h3>
+          <p>Turn weekly costs into clear individual amounts.</p>
+        </article>
+        <article class="feature-card image-card">
+          <img src="/concertMtSmart.jpg" alt="Concert crowd at Mt Smart" />
+          <h3>Save time</h3>
+          <p>Spend less time chasing numbers and more time doing what you enjoy.</p>
+        </article>
+        <article class="feature-card image-card">
+          <img src="/centralCity.JPG" alt="City shops" />
+          <h3>Update anytime</h3>
+          <p>Edit names, rent, percentages, and utilities as your flat changes.</p>
+        </article>
       </div>
     </div>
-    <!-- use this structure for the larger images  --></body
-  >
+  </section>
+
+  <section class="section soft">
+    <div class="page-shell split-section reverse">
+      <img src="/mountain.png" alt="Mountain landscape" />
+      <div>
+        <p class="eyebrow">For students and shared homes</p>
+        <h2 class="section-title">Clear enough for everyone.</h2>
+        <p class="section-copy">Flatter keeps the language plain and the calculations visible so each person can understand where their amount came from.</p>
+      </div>
+    </div>
+  </section>
 </main>
+
 <Footer />
 
 <style>
-  body {
-    margin: 0;
-    font-family: "Inter", sans-serif;
-    color: #333;
-  }
-  h1 {
-    font-weight: 700;
-    font-size: 3.5vw;
-    color: black;
-    margin-left: 2vw;
-    padding-top: 5vw;
-    width: 20vw;
-  }
-  p {
-    line-height: 1.6;
-  }
-  hr {
-    border: none;
-    border-top: 1px solid #000;
-    width: 40vw;
-    margin-left: 2vw;
-    margin-top: 3vw;
+  .compact {
+    min-height: clamp(360px, 54vh, 560px);
   }
 
-  .img-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    position: relative;
-  }
-  .img-wrapper {
-    position: relative;
-    width: 30%;
-    margin: 1%;
+  .image-card {
     overflow: hidden;
-    border-radius: 10px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3 ease;
-  }
-  .img-wrapper img {
-    width: 30vw;
-    height: 40vw;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-  .img-wrapper:hover img {
-    transform: scale(1.1);
-  }
-  .overlay-text {
-    position: absolute;
-    top: 72%;
-    bottom: 5%;
-    left: 30%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2.5vw;
-    border-radius: 10px;
-    font-weight: 700;
-    margin-left: 3vw;
-  }
-  img {
-    border-radius: 5%;
-  }
-  .container-right,
-  .container-left {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 2vw;
-    margin-top: 10vw;
-    margin-bottom: 5vw;
+    padding: 0;
   }
 
-  .container-right img,
-  .container-left img {
-    width: 40%;
-    height: auto;
-    border-radius: 30px;
-    transition: transform 0.3s ease;
-  }
-  .container-left img {
-    width: 55%;
-  }
-  .text-left,
-  .text-right {
-    font-size: 2.5vw;
-    font-weight: 300;
-    width: 40%;
-  }
-  .text-left {
-    display: flex;
-    flex-direction: column;
-  }
-  .text-left p {
-    margin-left: 3vw;
+  .image-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
   }
 
-  .text-right {
-    display: flex;
-    flex-direction: column;
+  .image-card h3,
+  .image-card p {
+    padding-inline: 22px;
   }
-  .text-right p {
-    margin-left: 2.2vw;
-    margin-bottom: 3vw;
+
+  .image-card h3 {
+    margin-top: 20px;
+  }
+
+  .image-card p {
+    padding-bottom: 24px;
+  }
+
+  .soft {
+    background: var(--surface-soft);
   }
 </style>

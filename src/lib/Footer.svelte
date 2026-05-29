@@ -1,120 +1,139 @@
 <footer>
-  <div class="footerNav">
-    <div class="row">
-      <div class="column">
-        <ul>
-          <div class="footerHead">
-            <li>HELPFUL PAGES</li>
-          </div>
-          <li><a href="/">Home</a></li>
-          <li><a href="/learn">Learn</a></li>
-          <li><a href="/calculator">Create a Flatter</a></li>
-        </ul>
+  <div class="footer-inner">
+    <div>
+      <a class="footer-brand" href="/">Flatter</a>
+      <p>Simple flat cost splitting for shared homes.</p>
+    </div>
+
+    <div class="footer-links">
+      <div>
+        <h2>Pages</h2>
+        <a href="/">Home</a>
+        <a href="/learn">Learn</a>
+        <a href="/calculator">Calculator</a>
       </div>
 
-      <div class="column">
-        <ul>
-          <div class="footerHead">
-            <li>SUPPORT</li>
-            <!-- the header is quite close to the text - add spacing -->
-          </div>
-          <li><a href="/contact-us"> Contact us</a></li>
-          <li><a href="/legalities">Legalities</a></li>
-        </ul>
+      <div>
+        <h2>Support</h2>
+        <a href="/contact-us">Contact us</a>
+        <a href="/legalities">Legalities</a>
       </div>
+    </div>
+
+    <div class="social-links" aria-label="Social links">
+      <a href="https://www.instagram.com/flattersnz/" aria-label="Instagram"><img src="/instagram.png" alt="" /></a>
+      <a href="https://www.youtube.com/@FlatterNZ" aria-label="YouTube"><img src="/youtube.png" alt="" /></a>
+      <a href="https://pin.it/13kUE1y7V" aria-label="Pinterest"><img src="/pinterest.png" alt="" /></a>
     </div>
   </div>
 
-  <div class="socialGroup">
-    <span class="dot"><a href="https://www.instagram.com/flattersnz/"><img src="instagram.png" alt="Instagram logo" class="socialIcon" /></a></span>
-    <span class="dot"><a href="https://www.youtube.com/@FlatterNZ"><img src="youtube.png" alt="Youtube logo" class="socialIcon" /></a> </span>
-    <span class="dot"><a href="https://pin.it/13kUE1y7V"><img src="pinterest.png" alt="Pinterest logo" class="socialIcon" /></a></span>
-  </div>
-
   <div class="copyright">
-    <a href="https://github.com/mcleodje63"> <b>&copy;Jessie Mcleod 2024</b> </a>
+    <a href="https://github.com/mcleodje63">&copy; Jessie Mcleod 2024</a>
   </div>
 </footer>
 
 <style>
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 4px;
-  }
-  .column {
-    flex: 50%;
-    display: flex;
-    padding: 0 4px;
-  }
-  .footerHead {
-    color: grey;
-    font-weight: 800;
-  }
-
-  .dot {
-    height: 4vw;
-    width: 4vw;
-    background-color: #494949;
-    border-radius: 100%;
-    display: block;
-    margin: 1vw;
-    margin-right: 0;
-  }
-
-  .socialIcon {
-    width: 2.5vw;
-    margin: 0.75vw;
-  }
-  .socialGroup {
-    margin-left: 35vw;
-  }
-
-  img {
-    width: 3vw;
-  }
   footer {
-    background-color: black;
-    font-family: "Inter", sans-serif;
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin-bottom: 0;
-    min-height: 50vh;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #111a13;
+    color: white;
   }
 
-  a {
-    text-align: center;
-    /* position: absolute; */
-    bottom: 0;
-    text-decoration: none;
+  .footer-inner {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.1fr) minmax(260px, 1fr) auto;
+    gap: 36px;
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 34px;
+  }
+
+  .footer-brand {
+    display: inline-block;
+    margin-bottom: 10px;
     color: white;
-  }
-  /* .footerNav {
-    display: flex;
-  }
-  .footerHead {
-    color: #8b8b8b;
+    font-size: 1.6rem;
     font-weight: 900;
-    margin-right: 1rem;
-  } */
-  ul {
-    font-weight: 650;
-    color: white;
-    list-style: none;
+    text-decoration: none;
+  }
+
+  p {
+    max-width: 320px;
     margin: 0;
-    padding: 2vw;
-    margin-left: 3vw;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.6;
   }
-  li {
-    margin: 0.8rem;
-    font-size: 1.2vw;
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
   }
-  .copyright {
-    text-align: center;
+
+  h2 {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-links a {
+    display: block;
+    margin: 8px 0;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .footer-links a:hover {
     color: white;
-    padding: 2vw;
-    font-size: 1.2vw;
-    margin-top: 19vw;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .social-links a {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.08);
+    transition:
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .social-links a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .social-links img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .copyright {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 18px 0 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .copyright a {
+    color: rgba(255, 255, 255, 0.62);
+    text-decoration: none;
+  }
+
+  @media (max-width: 820px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

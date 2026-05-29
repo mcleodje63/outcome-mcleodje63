@@ -1,34 +1,36 @@
 <script>
   export let title = "Main heading"
   export let subtitle = "Secondary heading"
+  export let eyebrow = "Flatter"
 </script>
 
-<header class="hero">
-  <link rel="icon" type="image/x-icon" href="flatterLogo" />
-  <div class="hero-body">
-    <h3 class="logo">Flatter</h3>
-    <h1>{title}</h1>
-    <p>{subtitle}</p>
-  </div>
+<header>
+  <p class="eyebrow">{eyebrow}</p>
+  <h1>{title}</h1>
+  <p class="subtitle">{subtitle}</p>
 </header>
 
 <style>
-  .logo {
-    color: white;
-    font-weight: 650;
-    font-family: "Inter", sans-serif;
-    font-size: 1.5vw;
+  header {
+    color: inherit;
   }
+
   h1 {
-    color: white;
+    max-width: 760px;
+    margin: 10px 0 12px;
+    color: inherit;
+    font-size: clamp(2.7rem, 8vw, 6rem);
     font-weight: 900;
-    font-family: "Inter", sans-serif;
-    font-size: 3.7vw;
+    line-height: 0.95;
+    letter-spacing: 0;
   }
-  p {
-    color: white;
-    font-weight: 400;
-    font-family: "Inter", sans-serif;
-    font-size: 2vw;
+
+  .subtitle {
+    max-width: 610px;
+    margin: 0;
+    color: currentColor;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    opacity: 0.82;
   }
 </style>

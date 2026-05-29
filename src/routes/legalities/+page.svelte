@@ -1,71 +1,61 @@
 <script>
   import Footer from "$lib/Footer.svelte"
   import Navigation from "$lib/Navigation.svelte"
-  import Header from "$lib/Header.svelte"
 </script>
 
 <Navigation />
 
 <main>
-  <div class="headerContainer">
-    <span class="imgContainer">
-      <img src="yellowHouse.JPG" alt="Yellow character house" />
-      <!-- is this meant to have gaps?  -->
-    </span>
-    <div class="header">
-      <Header title="The legal stuff" subtitle="We'll worry about that." />
+  <section class="hero-panel compact">
+    <img src="/yellowHouse.JPG" alt="Yellow house illustration" />
+    <div class="hero-content">
+      <p class="eyebrow">Credits</p>
+      <h1 class="hero-title">The legal stuff.</h1>
+      <p class="hero-copy">Attribution and source links for the project assets.</p>
     </div>
-  </div>
-  <div class="textContainer">
-    <p>Template <a href="https://github.com/craighead-diocesan-school/sveltekit-template.git"><b>sveltekit-template</b> </a>by <a href="https://github.com/MrHullen"><b>Mr Hullen</b></a></p>
+  </section>
 
-    <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
-
-    <p>
-      Pinterest icons created by <a href="https://www.flaticon.com/free-icons/pinterest" title="pinterest icons">Pixel perfect - Flaticon</a>
-    </p>
-    <p>Various <a href="https://www.canva.com/templates/EAGHQZdbWW4-yellow-and-brown-minimalist-vintage-good-morning-animated-instagram-post/" title="templates">templates</a> from <a href="https://www.canva.com/templates/EAF9fsUI-MM-black-minimal-animated-video-new-reels-instagram-story/" title="canva">Canva</a></p>
-    <p>
-      All photos by <a href="https://nz.pinterest.com/jessieeemcleod/?invite_code=e72319c28e8c4f84baba0bae3aca7bac&sender=849913898336554695" title="pinterest icons">Jessie McLeod</a>
-    </p>
-  </div>
+  <section class="section">
+    <div class="page-shell legal-list">
+      <a href="https://github.com/craighead-diocesan-school/sveltekit-template.git">SvelteKit template by Mr Hullen</a>
+      <a href="https://www.flaticon.com/authors/freepik">Freepik icons from Flaticon</a>
+      <a href="https://www.flaticon.com/free-icons/pinterest">Pinterest icons by Pixel perfect on Flaticon</a>
+      <a href="https://www.canva.com/templates/EAGHQZdbWW4-yellow-and-brown-minimalist-vintage-good-morning-animated-instagram-post/">Canva template credits</a>
+      <a href="https://nz.pinterest.com/jessieeemcleod/?invite_code=e72319c28e8c4f84baba0bae3aca7bac&sender=849913898336554695">Photos by Jessie McLeod</a>
+    </div>
+  </section>
 </main>
+
 <Footer />
 
 <style>
-  p {
-    text-align: center;
-    font-size: 2vh;
-    margin-bottom: 2vw;
+  .compact {
+    min-height: clamp(360px, 54vh, 560px);
   }
-  .textContainer {
-    margin: 20vw;
+
+  .legal-list {
+    display: grid;
+    gap: 12px;
+    max-width: 760px;
   }
-  .headerContainer {
-    font-family: "Inter", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 45vw;
-    margin: 0;
-    background-color: #f4f4f9;
-    position: relative;
+
+  .legal-list a {
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--brand-dark);
+    font-weight: 750;
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
   }
-  .imgContainer {
-    width: 100%;
-    overflow: hidden;
-    position: reletive;
-  }
-  .imgContainer img {
-    width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    display: block;
-  }
-  .header {
-    position: absolute;
-    top: 15vw;
-    left: 30vw; /* Center the header */
-    text-align: center;
-    color: white;
+
+  .legal-list a:hover {
+    border-color: rgba(49, 95, 60, 0.35);
+    box-shadow: 0 14px 34px rgba(35, 53, 38, 0.08);
+    transform: translateY(-2px);
   }
 </style>
