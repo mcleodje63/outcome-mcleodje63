@@ -2,37 +2,13 @@
   import Footer from "$lib/Footer.svelte"
   import Navigation from "$lib/Navigation.svelte"
 
-  const sampleProducts = [
-    {
-      name: "Anchor Blue Milk 2L",
-      url: "https://www.paknsave.co.nz/shop/product/5000429_ea_000pns?name=blue-top-milk",
-      currentPrice: "5.49"
-    },
-    {
-      name: "Pams Butter 500g",
-      url: "https://www.paknsave.co.nz/shop/product/5004690_ea_000pns?name=butter",
-      currentPrice: "6.79"
-    },
-    {
-      name: "Wattie's Baked Beans 420g",
-      url: "https://www.paknsave.co.nz/shop/product/5000105_ea_000pns?name=baked-beans-in-tomato-sauce",
-      currentPrice: "2.29"
-    }
-  ]
-
-  let products = sampleProducts.map((product) => ({
-    ...product,
-    pastPrice: null,
-    captureDate: null,
-    captureUrl: "",
-    status: "Ready",
-    loading: false
-  }))
+  let products = []
 
   let newProduct = {
     name: "",
     url: "",
-    currentPrice: ""
+    currentPrice: "",
+    pastPrice: ""
   }
 
   let targetDate = "20240101"
@@ -40,8 +16,8 @@
 
   $: selectedProduct = products[selectedIndex]
   $: totalCurrent = products.reduce((sum, product) => sum + toNumber(product.currentPrice), 0)
-  $: totalPast = products.reduce((sum, product) => sum + (product.pastPrice ?? 0), 0)
-  $: comparableCount = products.filter((product) => product.pastPrice !== null).length
+  $: totalPast = products.reduce((sum, product) => sum + toNumber(product.pastPrice), 0)
+  $: comparableCount = products.filter((product) => toNumber(product.pastPrice) > 0).length
   $: totalChange = comparableCount > 0 ? totalCurrent - totalPast : 0
   $: totalChangePercent = comparableCount > 0 && totalPast > 0 ? (totalChange / totalPast) * 100 : 0
 
@@ -57,23 +33,18 @@
     }).format(value)
   }
 
-  function formatCaptureDate(timestamp) {
-    if (!timestamp) return "No capture yet"
-    return `${timestamp.slice(6, 8)}/${timestamp.slice(4, 6)}/${timestamp.slice(0, 4)}`
-  }
-
   function priceChange(product) {
-    if (product.pastPrice === null) return null
-    return toNumber(product.currentPrice) - product.pastPrice
+    if (!toNumber(product.pastPrice)) return null
+    return toNumber(product.currentPrice) - toNumber(product.pastPrice)
   }
 
   function priceChangePercent(product) {
-    if (product.pastPrice === null || product.pastPrice === 0) return null
-    return (priceChange(product) / product.pastPrice) * 100
+    if (!toNumber(product.pastPrice)) return null
+    return (priceChange(product) / toNumber(product.pastPrice)) * 100
   }
 
   function addProduct() {
-    if (!newProduct.name.trim() || !newProduct.url.trim()) return
+    if (!newProduct.name.trim()) return
 
     products = [
       ...products,
@@ -82,16 +53,12 @@
         name: newProduct.name.trim(),
         url: newProduct.url.trim(),
         currentPrice: newProduct.currentPrice || "0",
-        pastPrice: null,
-        captureDate: null,
-        captureUrl: "",
-        status: "Ready",
-        loading: false
+        pastPrice: newProduct.pastPrice || ""
       }
     ]
 
     selectedIndex = products.length - 1
-    newProduct = { name: "", url: "", currentPrice: "" }
+    newProduct = { name: "", url: "", currentPrice: "", pastPrice: "" }
   }
 
   function removeProduct(index) {
@@ -106,97 +73,9 @@
     })
   }
 
-  function updateProductState(index, patch) {
-    products = products.map((product, productIndex) => {
-      if (productIndex !== index) return product
-      return { ...product, ...patch }
-    })
-  }
-
-  async function findArchivedPrice(index) {
-    const product = products[index]
-    if (!product?.url) return
-
-    updateProductState(index, {
-      loading: true,
-      status: "Looking for Wayback captures near the target date..."
-    })
-
-    try {
-      const capturesUrl = new URL("https://web.archive.org/cdx")
-      capturesUrl.searchParams.set("url", product.url)
-      capturesUrl.searchParams.set("output", "json")
-      capturesUrl.searchParams.set("fl", "timestamp,original,statuscode,mimetype,digest")
-      capturesUrl.searchParams.set("filter", "statuscode:200")
-      capturesUrl.searchParams.set("collapse", "digest")
-      capturesUrl.searchParams.set("from", targetDate.slice(0, 4))
-      capturesUrl.searchParams.set("to", targetDate.slice(0, 4))
-      capturesUrl.searchParams.set("limit", "25")
-
-      const capturesResponse = await fetch(capturesUrl)
-      if (!capturesResponse.ok) throw new Error("Wayback capture search failed")
-
-      const captureRows = await capturesResponse.json()
-      const targetTimestamp = Number(`${targetDate}000000`)
-      const captures = captureRows.slice(1).sort((a, b) => {
-        return Math.abs(Number(a[0]) - targetTimestamp) - Math.abs(Number(b[0]) - targetTimestamp)
-      })
-
-      if (!captures.length) {
-        updateProductState(index, {
-          loading: false,
-          status: "No archived product page was found for that year."
-        })
-        return
-      }
-
-      for (const capture of captures) {
-        const [timestamp, original] = capture
-        const archiveUrl = `https://web.archive.org/web/${timestamp}id_/${original}`
-        const htmlResponse = await fetch(archiveUrl)
-        const html = await htmlResponse.text()
-        const price = extractPrice(html)
-
-        if (price !== null) {
-          updateProductState(index, {
-            pastPrice: price,
-            captureDate: timestamp,
-            captureUrl: `https://web.archive.org/web/${timestamp}/${original}`,
-            status: "Historical price found",
-            loading: false
-          })
-          return
-        }
-      }
-
-      updateProductState(index, {
-        captureDate: captures[0][0],
-        captureUrl: `https://web.archive.org/web/${captures[0][0]}/${captures[0][1]}`,
-        status: "Captures found, but no readable price was exposed in the archived page.",
-        loading: false
-      })
-    } catch (error) {
-      updateProductState(index, {
-        loading: false,
-        status: "Wayback lookup could not complete from this browser session."
-      })
-    }
-  }
-
-  function extractPrice(html) {
-    const candidates = [
-      /"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-      /"Price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-      /data-testid="[^"]*price[^"]*"[^>]*>\s*\$?(\d+(?:\.\d{1,2})?)/i,
-      /(?:NZ\$|\$)\s*(\d+(?:\.\d{1,2})?)/i
-    ]
-
-    for (const pattern of candidates) {
-      const match = html.match(pattern)
-      if (match) return Number.parseFloat(match[1])
-    }
-
-    return null
+  function waybackUrl(product) {
+    if (!product?.url) return "https://web.archive.org/web/*/https://www.paknsave.co.nz/shop/*"
+    return `https://web.archive.org/web/${targetDate}*/${product.url}`
   }
 </script>
 
@@ -209,7 +88,7 @@
         <p class="eyebrow">PAK'nSAVE price history</p>
         <h1>Compare today's shop with archived prices.</h1>
         <p>
-          Paste PAK'nSAVE product links, enter the current shelf price, then ask the Wayback Machine for captures near a past date.
+          Add grocery items, open matching Wayback captures, then enter the old price you can verify from the archived page.
         </p>
       </div>
       <div class="summary-panel" aria-label="Shop summary">
@@ -249,6 +128,10 @@
             Current price
             <input class="form-input" bind:value={newProduct.currentPrice} inputmode="decimal" placeholder="5.49" />
           </label>
+          <label>
+            Archived price
+            <input class="form-input" bind:value={newProduct.pastPrice} inputmode="decimal" placeholder="Optional" />
+          </label>
           <button type="button" on:click={addProduct}>Add to comparison</button>
         </div>
       </aside>
@@ -259,49 +142,53 @@
             <p class="eyebrow">Basket comparison</p>
             <h2>Current vs archived prices</h2>
           </div>
-          <button type="button" on:click={() => findArchivedPrice(selectedIndex)} disabled={!selectedProduct || selectedProduct.loading}>
-            {selectedProduct?.loading ? "Checking..." : "Check selected item"}
-          </button>
+          <a class="toolbar-link" href={waybackUrl(selectedProduct)} target="_blank" rel="noreferrer">Open Wayback for selected</a>
         </div>
 
-        <div class="product-table" role="table" aria-label="Grocery price comparison">
-          <div class="table-row table-head" role="row">
-            <span>Item</span>
-            <span>Current</span>
-            <span>Archived</span>
-            <span>Change</span>
-            <span>Capture</span>
-          </div>
+        {#if products.length}
+          <div class="product-table" role="table" aria-label="Grocery price comparison">
+            <div class="table-row table-head" role="row">
+              <span>Item</span>
+              <span>Current</span>
+              <span>Archived</span>
+              <span>Change</span>
+              <span>Wayback</span>
+            </div>
 
-          {#each products as product, index}
-            <div class="table-row product-row" class:is-selected={selectedIndex === index} role="row">
-              <span>
-                <strong>{product.name}</strong>
-                <small>{product.status}</small>
-              </span>
-              <span>
-                <input value={product.currentPrice} inputmode="decimal" aria-label={`Current price for ${product.name}`} on:input={(event) => updateProduct(index, "currentPrice", event.currentTarget.value)} />
-              </span>
-              <span>{product.pastPrice === null ? "Pending" : formatMoney(product.pastPrice)}</span>
-              <span class:increase={priceChange(product) > 0} class:decrease={priceChange(product) < 0}>
-                {priceChange(product) === null ? "Pending" : `${formatMoney(priceChange(product))} (${priceChangePercent(product).toFixed(1)}%)`}
-              </span>
-              <span>
-                {#if product.captureUrl}
-                  <a href={product.captureUrl} target="_blank" rel="noreferrer" on:click|stopPropagation>{formatCaptureDate(product.captureDate)}</a>
-                {:else}
-                  {formatCaptureDate(product.captureDate)}
+            {#each products as product, index}
+              <div class="table-row product-row" class:is-selected={selectedIndex === index} role="row">
+                <span>
+                  <strong>{product.name}</strong>
+                  <small>{product.url ? "Product URL saved" : "No product URL yet"}</small>
+                </span>
+                <span>
+                  <input value={product.currentPrice} inputmode="decimal" aria-label={`Current price for ${product.name}`} on:input={(event) => updateProduct(index, "currentPrice", event.currentTarget.value)} />
+                </span>
+                <span>
+                  <input value={product.pastPrice} inputmode="decimal" aria-label={`Archived price for ${product.name}`} on:input={(event) => updateProduct(index, "pastPrice", event.currentTarget.value)} />
+                </span>
+                <span class:increase={priceChange(product) > 0} class:decrease={priceChange(product) < 0}>
+                  {priceChange(product) === null ? "Pending" : `${formatMoney(priceChange(product))} (${priceChangePercent(product).toFixed(1)}%)`}
+                </span>
+                <span>
+                  <a href={waybackUrl(product)} target="_blank" rel="noreferrer">Open captures</a>
+                </span>
+              </div>
+              <div class="row-actions">
+                {#if product.url}
+                  <a href={product.url} target="_blank" rel="noreferrer">Open current page</a>
                 {/if}
-              </span>
-            </div>
-            <div class="row-actions">
-              <a href={product.url} target="_blank" rel="noreferrer">Open current page</a>
-              <button type="button" on:click={() => (selectedIndex = index)}>{selectedIndex === index ? "Selected" : "Select"}</button>
-              <button type="button" on:click={() => findArchivedPrice(index)} disabled={product.loading}>{product.loading ? "Checking" : "Check Wayback"}</button>
-              <button type="button" on:click={() => removeProduct(index)}>Remove</button>
-            </div>
-          {/each}
-        </div>
+                <button type="button" on:click={() => (selectedIndex = index)}>{selectedIndex === index ? "Selected" : "Select"}</button>
+                <button type="button" on:click={() => removeProduct(index)}>Remove</button>
+              </div>
+            {/each}
+          </div>
+        {:else}
+          <div class="empty-state">
+            <h3>No grocery items yet</h3>
+            <p>Add an item on the left. Product URLs are optional, but they make the Wayback capture search more precise.</p>
+          </div>
+        {/if}
       </div>
     </div>
   </section>
@@ -414,6 +301,20 @@
     font-weight: 850;
   }
 
+  .toolbar-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--brand);
+    border-radius: var(--radius);
+    background: var(--brand);
+    color: white;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
   button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
@@ -514,6 +415,26 @@
 
   .decrease {
     color: #217449;
+  }
+
+  .empty-state {
+    padding: 34px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    background: #fbfcfa;
+  }
+
+  .empty-state h3 {
+    margin: 0 0 8px;
+    color: var(--brand-dark);
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .empty-state p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
   }
 
   @media (max-width: 900px) {
